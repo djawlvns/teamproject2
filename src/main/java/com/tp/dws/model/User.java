@@ -1,6 +1,7 @@
 package com.tp.dws.model;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import com.tp.dws.enumstatus.Gender;
 
@@ -11,13 +12,16 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.UniqueConstraint;
 
 	@Entity
-	@Table(name="members",
+	@Table(name="users",
 			uniqueConstraints = {
 					@UniqueConstraint(name = "uk_member_login_id",
 						columnNames = {"loginId"})
@@ -25,6 +29,7 @@ import jakarta.persistence.UniqueConstraint;
 	public class User {
 		
 		@Id
+		@Column(name = "user_id")
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Long id;
 		@Column(nullable = false, length =30, updatable = false)
@@ -47,6 +52,21 @@ import jakarta.persistence.UniqueConstraint;
 		@Column(nullable = false, length = 100)
 		private String email;
 
+		@ManyToMany
+		@JoinTable(
+				name = "user_role",
+				joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
+				inverseJoinColumns = {@JoinColumn(name = "roleId",referencedColumnName = "role_id")}
+				)
+		private Set<Role> role;
+		
+		@ManyToMany
+		@JoinTable(
+				name = "user_board",
+				joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
+				inverseJoinColumns = {@JoinColumn(name = "board_id", referencedColumnName = "board_id")}
+				)
+		private Set<Board> board;
 
 		public User() {
 			super();
@@ -134,7 +154,9 @@ import jakarta.persistence.UniqueConstraint;
 		public void setEmail(String email) {
 			this.email = email;
 		}
-		
+
+
+
 		
 		
 		

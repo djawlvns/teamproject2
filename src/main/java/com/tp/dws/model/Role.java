@@ -10,27 +10,16 @@ import jakarta.persistence.Table;
 public class Role {
 
 	@Id
-	@Column(name = "role_id", length = 10)
-	private String roleId;
-	
+	@Column(name = "role_Name", length = 10)
 	private String roleName;
 	
 	public Role() {
 		super();
 	}
 
-	public Role(String roleId, String roleName) {
+	public Role(String roleName) {
 		super();
-		this.roleId = roleId;
 		this.roleName = roleName;
-	}
-
-	public String getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(String roleId) {
-		this.roleId = roleId;
 	}
 
 	public String getRoleName() {
@@ -41,6 +30,7 @@ public class Role {
 		this.roleName = roleName;
 	}
 
+	
 
 	
 }
