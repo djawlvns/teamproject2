@@ -19,28 +19,29 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE})
+@CrossOrigin(origins = "http://localhost:3000", methods = { RequestMethod.GET, RequestMethod.POST,
+		RequestMethod.DELETE })
 public class UserController {
-	
-	private final UserServiceImpl memberServiceImpl;
-	
+
+	private final UserServiceImpl userServiceImpl;
+
 	@Autowired
-	public UserController(UserServiceImpl memberServiceImpl) {
+	public UserController(UserServiceImpl userServiceImpl) {
 		super();
-		this.memberServiceImpl = memberServiceImpl;
+		this.userServiceImpl = userServiceImpl;
 	}
 
 	@PostMapping("/basic/signup")
-	public ResponseEntity<BaseResponse<Void>> signUp(@RequestBody @Valid UserDto memberDto){
-		return new ResponseEntity<BaseResponse<Void>>(
-						memberServiceImpl.signUp(memberDto),
+	public ResponseEntity<BaseResponse<UserDto>> signUp(@RequestBody @Valid UserDto userDto) {
+		return new ResponseEntity<BaseResponse<UserDto>>(
+				userServiceImpl.signUp(userDto),
 				HttpStatus.CREATED);
 	}
-		
-		@PostMapping("/basic/login")
-		public ResponseEntity<BaseResponse<Void>> login(@RequestBody @Valid UserLoginDto memberLoginDto){
-			return new ResponseEntity<BaseResponse<Void>>(
-							memberServiceImpl.login(memberLoginDto),
-					HttpStatus.OK);
+
+	@PostMapping("/basic/login")
+	public ResponseEntity<BaseResponse<Void>> login(@RequestBody @Valid UserLoginDto userLoginDto) {
+		return new ResponseEntity<BaseResponse<Void>>(
+				userServiceImpl.login(userLoginDto),
+				HttpStatus.OK);
 	}
 }
