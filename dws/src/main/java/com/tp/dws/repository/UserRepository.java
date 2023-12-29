@@ -14,8 +14,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	User findByLoginId(String loginId);
 
-	@EntityGraph(attributePaths = "authorities")
-	Optional<User> findOneWithAuthoritiesByUsername(String username);
+	@EntityGraph(attributePaths = "role")
+	Optional<User> findOneWithAuthoritiesByLoginId(String loginId);
 
 	// 위 메소드와 동일한 메소드 (JPQL 버전)
 	// @Query("SELECT u FROM User u JOIN FETCH u.authorities WHERE u.username =

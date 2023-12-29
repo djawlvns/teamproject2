@@ -24,11 +24,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
    @Override
    @Transactional
-   public UserDetails loadUserByUsername(final String username) {
-      return userRepository.findOneWithAuthoritiesByUsername(username)
-         .map(user -> createUser(username, user))
-         .orElseThrow(() -> new InvalidRequestException(username,
-        		 username + " -> 데이터베이스에서 찾을 수 없습니다."));
+   public UserDetails loadUserByUsername(final String loginId) {
+      return userRepository.findOneWithAuthoritiesByLoginId(loginId)
+         .map(user -> createUser(loginId, user))
+         .orElseThrow(() -> new InvalidRequestException(loginId,
+        		 loginId + " -> 데이터베이스에서 찾을 수 없습니다."));
    }
 
    private org.springframework.security.core.userdetails.User createUser(

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.tp.dws.dto.UserLoginDto;
 import com.tp.dws.enumstatus.ResultCode;
+import com.tp.dws.util.SecurityUtil;
 import com.tp.dws.dto.BaseResponse;
 import com.tp.dws.dto.UserDto;
 import com.tp.dws.enumstatus.Gender;
@@ -81,5 +82,20 @@ public class UserServiceImpl {
 				throw new InvalidRequestException("false","로그인에 실패했습니다.");
 			}
 		}
+	
+    
+    public UserDto getUserWithAuthorities(String loginId) {
+        return UserDto.from(userRepository.findOneWithAuthoritiesByLoginId(loginId)
+        		.orElseThrow(() -> new InvalidRequestException(loginId,"member not found")));
+    }
+
+    
+    public UserDto getCurrentUserWithAuthorities() {
+        return UserDto.from(
+                SecurityUtil.getCurrentUsername()
+                        .flatMap(userRepository::findOneWithAuthoritiesByLoginId)
+                        .orElseThrow(() -> new InvalidRequestException("No current user","Current member not found"))
+        );
+    }
 	
 }
