@@ -38,9 +38,7 @@ public class UserServiceImpl {
 
 	public BaseResponse<UserDto> signUp(UserDto userDto) {
 		User user = userRepository.findByLoginId(userDto.getLoginId());
-		if (user != null) {
-			throw new InvalidRequestException("Duplicate ID", "이미 등록된 ID입니다");
-		}
+		
 		
 		Role role = new Role();
 		role.setRoleName("ROLE_USER");
@@ -96,6 +94,11 @@ public class UserServiceImpl {
                         .flatMap(userRepository::findOneWithAuthoritiesByLoginId)
                         .orElseThrow(() -> new InvalidRequestException("No current user","Current member not found"))
         );
+    }
+    
+    public boolean checkIfIdExistsInDatabase(String id) {
+        User user = userRepository.findByLoginId(id);
+        return user != null;
     }
 	
 }

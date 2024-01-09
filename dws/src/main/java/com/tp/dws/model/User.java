@@ -68,9 +68,9 @@ public class User {
 	@ManyToMany
 	@JoinTable(name = "user_bookmark", joinColumns = {
 			@JoinColumn(name = "id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "vod_id", referencedColumnName = "vod_id")
+					@JoinColumn(name = "bookmark_id", referencedColumnName = "bookmark_id")
 			})
-	private Set<Vod> bookmarkVod;
+	private Set<BookMark> bookmark;
 
 	@ManyToMany
 	@JoinTable(name = "user_lecture", joinColumns = {
@@ -86,12 +86,17 @@ public class User {
 			})
 	private Set<Vod> vod;
 
-	@ManyToMany
-	@JoinTable(name = "user_attendance", joinColumns = {
-			@JoinColumn(name = "id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "lectures_id", referencedColumnName = "lectures_id")
-			})
-	private Set<Lecture> atdcLecture;
+	/*
+	 * @ManyToMany
+	 * 
+	 * @JoinTable(name = "user_attendance", joinColumns = {
+	 * 
+	 * @JoinColumn(name = "id", referencedColumnName = "id") }, inverseJoinColumns =
+	 * {
+	 * 
+	 * @JoinColumn(name = "lectures_id", referencedColumnName = "lectures_id") })
+	 * private Set<Lecture> atdcLecture;
+	 */
 
 	@ManyToMany
 	@JoinTable(name = "user_board", joinColumns = {

@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 public class Role {
 
 	@Id
-	@Column(name = "role_Name", length = 10)
+	@Column(name = "role_Name", length = 20)
 	private String roleName;
 	
 	public Role() {

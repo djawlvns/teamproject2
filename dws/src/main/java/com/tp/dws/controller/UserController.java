@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,14 +36,14 @@ public class UserController {
 		this.userServiceImpl = userServiceImpl;
 	}
 
-	@PostMapping("/basic/signup")
+	@PostMapping("/signup")
 	public ResponseEntity<BaseResponse<UserDto>> signUp(@RequestBody @Valid UserDto userDto) {
 		return new ResponseEntity<BaseResponse<UserDto>>(
 				userServiceImpl.signUp(userDto),
 				HttpStatus.CREATED);
 	}
 
-	@PostMapping("/basic/login")
+	@PostMapping("/login")
 	public ResponseEntity<BaseResponse<Void>> login(@RequestBody @Valid UserLoginDto userLoginDto) {
 		return new ResponseEntity<BaseResponse<Void>>(
 				userServiceImpl.login(userLoginDto),
@@ -58,4 +59,22 @@ public class UserController {
                         ResultCode.SUCCESS.getMsg()
         ));
     }
+    
+    @GetMapping("/checkDuplicateId/{id}")
+    public ResponseEntity<BaseResponse<String>> checkDuplicateId(@PathVariable String id) {
+        boolean isDuplicate = userServiceImpl.checkIfIdExistsInDatabase(id);
+        if (isDuplicate) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new BaseResponse<>(
+                            ResultCode.ERROR.name(),
+                            "아이디가 이미 존재합니다.",
+                            ResultCode.ERROR.getMsg()
+            ));
+        }
+        return ResponseEntity.ok(new BaseResponse<>(
+                        ResultCode.SUCCESS.name(),
+                        "사용 가능한 아이디입니다.",
+                        ResultCode.SUCCESS.getMsg()
+        ));
+    }
+    
 }
