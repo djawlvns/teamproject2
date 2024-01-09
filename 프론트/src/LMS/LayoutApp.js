@@ -1,0 +1,65 @@
+import { QueryClient, QueryClientProvider } from "react-query";
+import { createContext, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Home } from "./Home";
+import { Error } from "./Error";
+import { Logout } from "./HeaderBar/Logout";
+import { Login } from "./HeaderBar/Login";
+import { Layout } from "./Layout";
+import { ClassRoom } from "./Menu/ClassRoom";
+import { VodRoom } from "./Menu/VodRoom";
+import { Board } from "./Menu/Board";
+import { Mypage } from "./Mypage/Mypage";
+import { Notice } from "./Notice";
+import { Schedule } from "./Schedule";
+import { Register } from "./HeaderBar/Register";
+import { Sregister } from "./HeaderBar/Sregister";
+import { Tregister } from "./HeaderBar/Tregister";
+import { Layout2 } from "./Layout2";
+// import { Me } from "./Mypage/MyInfo";
+import { Bookmark } from "./Mypage/Bookmark";
+import { Grade } from "./Mypage/Grade";
+import { Homework } from "./Mypage/Homework";
+import { ClassCheck } from "./Mypage/ClassCheck";
+
+const client = new QueryClient();
+export const MyContext = createContext();
+
+export function LayoutApp() {
+  const [myGlobalState, setMyGlobalState] = useState(null);
+
+  return (
+    <>
+      <QueryClientProvider client={client}>
+        <MyContext.Provider value={(myGlobalState, setMyGlobalState)}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Login />}>
+                <Route index element={<Login />} />
+                <Route path="login" element={<Login />} />
+              </Route>
+              <Route path="/join" element={<Layout2 />}>
+                <Route index element={<Register />} />
+                <Route path="register" element={<Register />} />
+                <Route path="sregister" element={<Sregister />} />
+                <Route path="tregister" element={<Tregister />} />
+              </Route>
+              <Route path="/main" element={<Layout />}>
+                <Route index elemnet={<Layout />} />
+                <Route path="home" element={<Home />} />
+                <Route path="logout" element={<Logout />} />
+                <Route path="classroom" element={<ClassRoom />} />
+                <Route path="vodroom" element={<VodRoom />} />
+                <Route path="board" element={<Board />} />
+                <Route path="mypage" element={<Mypage />} />
+                <Route path="notice" element={<Notice />} />
+                <Route path="schedule" element={<Schedule />} />
+                <Route path="*" element={<Error />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </MyContext.Provider>
+      </QueryClientProvider>
+    </>
+  );
+}
