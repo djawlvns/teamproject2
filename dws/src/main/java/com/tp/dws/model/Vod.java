@@ -16,7 +16,7 @@ public class Vod {
     private Long id;
 
     @Column(nullable = false)
-    private String Title;
+    private String title;
 
     @Column(nullable = false)
     private String date;
@@ -34,7 +34,7 @@ public class Vod {
 	public Vod(Long id, String title, String date, String thumbnail, String description) {
 		super();
 		this.id = id;
-		Title = title;
+		this.title = title;
 		this.date = date;
 		this.thumbnail = thumbnail;
 		this.description = description;
@@ -49,11 +49,11 @@ public class Vod {
 	}
 
 	public String getTitle() {
-		return Title;
+		return title;
 	}
 
 	public void setTitle(String title) {
-		Title = title;
+		this.title = title;
 	}
 
 	public String getDate() {
