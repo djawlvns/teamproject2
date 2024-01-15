@@ -19,8 +19,68 @@ public class Vod {
     private String Title;
 
     @Column(nullable = false)
-    private String uploadTime;
+    private String date;
 
     @Column(nullable = false)
-    private String Content;
+    private String thumbnail;
+    
+    @Column(nullable = false)
+    private String description;
+
+	public Vod() {
+		super();
+	}
+
+	public Vod(Long id, String title, String date, String thumbnail, String description) {
+		super();
+		this.id = id;
+		Title = title;
+		this.date = date;
+		this.thumbnail = thumbnail;
+		this.description = description;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return Title;
+	}
+
+	public void setTitle(String title) {
+		Title = title;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getThumbnail() {
+		return thumbnail;
+	}
+
+	public void setThumbnail(String thumbnail) {
+		this.thumbnail = thumbnail;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+
+    
 }

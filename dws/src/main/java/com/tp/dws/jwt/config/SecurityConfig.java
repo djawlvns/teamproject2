@@ -50,9 +50,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers("/api/authenticate").permitAll()
                         .requestMatchers("/api/signup").permitAll()
-                        .requestMatchers("/api/basic/signup").permitAll()
-                        .requestMatchers("/checkDuplicateId/{id}").permitAll()
-//                        .requestMatchers("/api/board").permitAll()
+                        .requestMatchers("/api/checkDuplicateId/**").permitAll()
+                        .requestMatchers("/api/board").permitAll()
+                        .requestMatchers("/api/vod").permitAll()
                         .anyRequest().authenticated()
                 )
 

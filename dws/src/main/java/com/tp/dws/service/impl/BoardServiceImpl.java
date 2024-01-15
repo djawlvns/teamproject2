@@ -23,16 +23,16 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
-    private final UserRepository memberRepository;
+    private final UserRepository userRepository;
     @Autowired
-    public BoardServiceImpl(BoardRepository boardRepository, UserRepository memberRepository) {
+    public BoardServiceImpl(BoardRepository boardRepository, UserRepository userRepository) {
         this.boardRepository = boardRepository;
-        this.memberRepository = memberRepository;
+        this.userRepository = userRepository;
     }
 
     public BaseResponse<Void> createBoard(BoardDto boardDto) {
-        User member = memberRepository.findByLoginId(boardDto.getAuthor());
-        if (member == null) {
+        User user = userRepository.findByLoginId(boardDto.getAuthor());
+        if (user == null) {
             throw new InvalidRequestException("Invalid author", "글쓰기 권한이 없습니다");
         }
         // Board 객체 생성

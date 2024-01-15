@@ -35,6 +35,7 @@ public class UserController {
 		super();
 		this.userServiceImpl = userServiceImpl;
 	}
+	
 
 	@PostMapping("/signup")
 	public ResponseEntity<BaseResponse<UserDto>> signUp(@RequestBody @Valid UserDto userDto) {
@@ -60,20 +61,20 @@ public class UserController {
         ));
     }
     
-    @GetMapping("/checkDuplicateId/{id}")
+    @PostMapping("/checkDuplicateId/{id}")
     public ResponseEntity<BaseResponse<String>> checkDuplicateId(@PathVariable String id) {
         boolean isDuplicate = userServiceImpl.checkIfIdExistsInDatabase(id);
         if (isDuplicate) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new BaseResponse<>(
-                            ResultCode.ERROR.name(),
-                            "아이디가 이미 존재합니다.",
-                            ResultCode.ERROR.getMsg()
+                    ResultCode.ERROR.name(),
+                    "아이디가 이미 존재합니다.",
+                    ResultCode.ERROR.getMsg()
             ));
         }
         return ResponseEntity.ok(new BaseResponse<>(
-                        ResultCode.SUCCESS.name(),
-                        "사용 가능한 아이디입니다.",
-                        ResultCode.SUCCESS.getMsg()
+                ResultCode.SUCCESS.name(),
+                "사용 가능한 아이디입니다.",
+                ResultCode.SUCCESS.getMsg()
         ));
     }
     
