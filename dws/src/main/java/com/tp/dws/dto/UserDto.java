@@ -44,8 +44,7 @@ public class UserDto {
 			@NotBlank String name,
 			@NotBlank @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$", message = "날짜형식 (YYYY-MM-DD)을 확인해주세요.") String birthDate,
 			@NotBlank @Pattern(regexp = "^(MAN|WOMAN)$", message = "MAN이나 WOMAN즁 하나를 선택해주세요") String gender,
-			@NotBlank @Email String email,
-			Set<RoleDto> roleDtoSet) {
+			@NotBlank @Email String email, Set<RoleDto> roleDtoSet) {
 		super();
 		this.loginId = loginId;
 		this.password = password;
@@ -56,7 +55,7 @@ public class UserDto {
 		this.roleDtoSet = roleDtoSet;
 	}
 
-
+	
 	public String getLoginId() {
 		return loginId;
 	}
@@ -115,15 +114,20 @@ public class UserDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	public Set<RoleDto> getRoleDtoSet(){
+
+
+
+
+	public Set<RoleDto> getRoleDtoSet() {
 		return roleDtoSet;
 	}
-	
+
+
 	public void setRoleDtoSet(Set<RoleDto> roleDtoSet) {
 		this.roleDtoSet = roleDtoSet;
 	}
-	
+
+
 	public static UserDto from(User user) {
 		if(user == null) return null;
 		

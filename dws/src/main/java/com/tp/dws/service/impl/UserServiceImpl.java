@@ -41,7 +41,9 @@ public class UserServiceImpl {
 		
 		
 		Role role = new Role();
-		role.setRoleName("ROLE_USER");
+
+	    role.setRoleName("ROLE_USER");
+	    
 		
 		user = new User();
 		user.setId(null);
