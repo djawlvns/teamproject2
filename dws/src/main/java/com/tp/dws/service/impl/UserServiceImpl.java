@@ -35,7 +35,6 @@ public class UserServiceImpl {
 		this.passwordEncoder = passwordEncoder;
 	}
 	
-
 	public BaseResponse<UserDto> signUp(UserDto userDto) {
 		User user = userRepository.findByLoginId(userDto.getLoginId());
 		
@@ -69,7 +68,7 @@ public class UserServiceImpl {
 	public BaseResponse<Void> login(UserLoginDto userLoginDto) {
 		User user = userRepository.findByLoginId(userLoginDto.getLoginId());
 		if (user != null && 
-			user.getPassword().matches(userLoginDto.getPassword()))
+			passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword()))
 			{
 			
 				return 	new BaseResponse<Void>(
@@ -83,13 +82,13 @@ public class UserServiceImpl {
 			}
 		}
 	
-    
+
     public UserDto getUserWithAuthorities(String loginId) {
         return UserDto.from(userRepository.findOneWithAuthoritiesByLoginId(loginId)
         		.orElseThrow(() -> new InvalidRequestException(loginId,"member not found")));
     }
 
-    
+
     public UserDto getCurrentUserWithAuthorities() {
         return UserDto.from(
                 SecurityUtil.getCurrentUsername()
