@@ -26,18 +26,22 @@ public class Vod {
     
     @Column(nullable = false)
     private String description;
+    
+    @Column(nullable = false)
+    private String url;
 
 	public Vod() {
 		super();
 	}
 
-	public Vod(Long id, String title, String date, String thumbnail, String description) {
+	public Vod(Long id, String title, String date, String thumbnail, String description, String url) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.date = date;
 		this.thumbnail = thumbnail;
 		this.description = description;
+		this.url = url;
 	}
 
 	public Long getId() {
@@ -79,6 +83,16 @@ public class Vod {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	
 
 
 
