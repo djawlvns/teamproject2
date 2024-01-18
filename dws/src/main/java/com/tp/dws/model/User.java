@@ -58,12 +58,6 @@ public class User {
 					@JoinColumn(name = "role_name", referencedColumnName = "role_name") })
 	private Set<Role> role;
 
-	@ManyToMany
-	@JoinTable(name = "user_homework", joinColumns = {
-			@JoinColumn(name = "id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "homework_id", referencedColumnName = "homework_id")
-			})
-	private Set<HomeWork> homeWork;
 
 	@ManyToMany
 	@JoinTable(name = "user_bookmark", joinColumns = {

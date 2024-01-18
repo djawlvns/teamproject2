@@ -67,9 +67,9 @@ public class UserServiceImpl {
 	}
 	
 	public BaseResponse<Void> login(UserLoginDto userLoginDto) {
-		User member = userRepository.findByLoginId(userLoginDto.getLoginId());
-		if (member != null && 
-			member.getPassword().matches(userLoginDto.getPassword()))
+		User user = userRepository.findByLoginId(userLoginDto.getLoginId());
+		if (user != null && 
+			user.getPassword().matches(userLoginDto.getPassword()))
 			{
 			
 				return 	new BaseResponse<Void>(

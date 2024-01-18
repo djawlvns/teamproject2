@@ -31,6 +31,7 @@ public class VodServiceImpl {
 			vod.setDate(vodDto.getDate());
 			vod.setDescription(vodDto.getDescription());
 			vod.setThumbnail(vodDto.getThumbnail());
+			vod.setUrl(vodDto.getUrl());
 			
 			vodRespository.save(vod);
 			return new BaseResponse<>(
