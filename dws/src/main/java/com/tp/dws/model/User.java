@@ -80,17 +80,6 @@ public class User {
 			})
 	private Set<Vod> vod;
 
-	/*
-	 * @ManyToMany
-	 * 
-	 * @JoinTable(name = "user_attendance", joinColumns = {
-	 * 
-	 * @JoinColumn(name = "id", referencedColumnName = "id") }, inverseJoinColumns =
-	 * {
-	 * 
-	 * @JoinColumn(name = "lectures_id", referencedColumnName = "lectures_id") })
-	 * private Set<Lecture> atdcLecture;
-	 */
 
 	@ManyToMany
 	@JoinTable(name = "user_board", joinColumns = {
@@ -185,6 +174,18 @@ public class User {
 
 	public void setRoles(Set<Role> role) {
 		this.role = role;
+	}
+	public Set<BookMark> getBookMark(){
+		return bookmark;
+	}
+	public void setBookmark(Set<BookMark> bookmark) {
+		this.bookmark = bookmark;
+	}
+	public Set<Vod> getVod(){
+		return vod;
+	}
+	public void setVod(Set<Vod> vod) {
+		this.vod = vod;
 	}
 
 }

@@ -1,10 +1,15 @@
 package com.tp.dws.model;
 
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -29,7 +34,13 @@ public class Vod {
     
     @Column(nullable = false)
     private String url;
-
+    
+    @ManyToMany
+    @JoinTable(name = "vod_bookmark", joinColumns = {
+    		@JoinColumn(name = "vod_id", referencedColumnName = "vod_id")
+    }, inverseJoinColumns = {@JoinColumn(name = "bookmark_id", referencedColumnName = "bookmark_id")})
+    private Set<BookMark> bookmark;
+    
 	public Vod() {
 		super();
 	}
@@ -92,8 +103,13 @@ public class Vod {
 		this.url = url;
 	}
 
-	
+	public Set<BookMark> getBookMark(){
+		return bookmark;
+	}
 
+	public void setBookmark(Set<BookMark> bookmark) {
+		this.bookmark= bookmark;
+	}
 
 
     

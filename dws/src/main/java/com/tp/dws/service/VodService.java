@@ -8,4 +8,5 @@ import com.tp.dws.model.Vod;
 public interface VodService {
 
 	public BaseResponse<List<Vod>> getAllVod();
+	public BaseResponse<List<Vod>> getBookmarkdVod();
 }
