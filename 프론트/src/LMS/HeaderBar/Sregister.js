@@ -111,16 +111,21 @@ export function Sregister() {
     // 중복 확인 API 호출하는 함수 작성 후 호출하도록 수정해야 합니다.
     checkDuplicateId(formData.loginId)
       .then((data) => {
-        console.log("아이디 중복 확인:", data);
-        // 중복 여부에 따라 처리
-        if (data.isDuplicate) {
+        // 서버로부터 받은 응답을 확인하고 처리
+        if (data.errorMessage) {
+          // 서버에서 에러 메시지가 온 경우 처리
+          console.error("아이디 중복 확인 에러:", data.errorMessage);
+        } else if (data.isDuplicate) {
+          // 중복된 아이디인 경우 처리
           console.log("이미 사용 중인 아이디입니다.");
         } else {
+          // 중복되지 않은 경우 처리
           console.log("사용 가능한 아이디입니다.");
         }
       })
       .catch((error) => {
-        console.error("아이디 중복 확인 에러:", error);
+        // 클라이언트 측에서 발생한 에러 처리
+        console.error("아이디 중복 확인 에러:", error.message);
       });
   };
 

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import { Player } from "../Module/Player";
 import { PlayerBar } from "../Module/PlayerBar";
-import { ProgressBar } from "../Module/ProgressBar";
+import ProgressBar from "../Module/ProgressBar";
 
 const Container = styled.div`
   width: 100vw;
@@ -41,16 +41,6 @@ const ClassCheck = styled.div`
   flex-direction: column;
 `;
 
-const PercentBox = styled.div``;
-const PercentageBar = styled.div`
-  width: ${(props) =>
-    isNaN(props.percentage) ? "0px" : `${props.percentage}px`};
-  height: 20px;
-  background-color: #4caf50;
-  text-align: center;
-  z-index: 1;
-`;
-
 const CheckBox = styled.div``;
 const Check = styled.button`
   width: 200px;
@@ -61,34 +51,19 @@ const Check = styled.button`
 `;
 
 export function ClassRoom() {
-  const videoRef = useRef(null);
-  const [videoProgress, setVideoProgress] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const playerRef = useRef(null);
 
-  const updateProgress = () => {
-    const videoElement = videoRef.current;
+  //played,duration,onSeek 값 설정
+  const [played, setPlayed] = useState(0);
+  const [duration, setDuration] = useState(0);
 
-    if (videoElement) {
-      const progress = (videoElement.currentTime / videoElement.duration) * 100;
-      setVideoProgress(progress);
+  const onSeek = (value) => {
+    if (playerRef.current) {
+      setPlayed(value);
+      playerRef.current.seekTo(value);
     }
-
-    requestAnimationFrame(updateProgress);
   };
-
-  useEffect(() => {
-    const videoElement = videoRef.current;
-
-    if (videoElement) {
-      videoElement.addEventListener("timeupdate", updateProgress);
-    }
-
-    return () => {
-      if (videoElement) {
-        videoElement.removeEventListener("timeupdate", updateProgress);
-      }
-    };
-  }, []);
 
   return (
     <>
@@ -96,22 +71,28 @@ export function ClassRoom() {
         <ClassContent>
           <ClassBoard>
             <ClassBoardTxt>수업 동영상</ClassBoardTxt>
-            <Player playing={playing} setPlaying={setPlaying} />
-            {/* <Video
-              ref={videoRef}
-              src="https://www.youtube.com/embed/dh4hdtZ00EU" // controls 속성 제거
-              frameBorder="0"
-              allowFullScreen
-              controls={false}
-            /> */}
+            <Player
+              ref={playerRef}
+              playing={playing}
+              setPlaying={setPlaying}
+              onDuration={(value) => setDuration(value)}
+              onProgress={({ played }) => setPlayed(played)}
+            />
           </ClassBoard>
           <ClassCheck>
-            <PercentBox>
-              <PercentageBar percentage={videoProgress} />
-            </PercentBox>
-            {/* 출석 체크 후 강의완료되면 수강완료 버튼으로 전환 */}
+            {/* 진행도 */}
+            <ProgressBar
+              played={played}
+              duration={duration}
+              onSeek={onSeek}
+              ref={playerRef}
+              playing={playing}
+              setPlaying={setPlaying}
+            />
+            {/* 재생멈춤 버튼 */}
             <PlayerBar playing={playing} setPlaying={setPlaying} />
             <CheckBox>
+              {/* 출석 체크 후 강의완료되면 수강완료 버튼으로 전환 */}
               <Check>출석 체크</Check>
             </CheckBox>
           </ClassCheck>

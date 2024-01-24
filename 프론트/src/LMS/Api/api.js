@@ -12,12 +12,13 @@ export function signUp(user) {
 export const checkDuplicateId = async (loginId) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/checkDuplicateId?loginId=${loginId}`,
+      `http://localhost:8080/api/checkDuplicateId/${loginId}`,
       {
-        method: "GET",
+        method: "POST", // POST 방식으로 변경
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ id: loginId }), // 데이터를 객체로 감싸서 전달
       }
     );
 
@@ -26,7 +27,7 @@ export const checkDuplicateId = async (loginId) => {
     }
 
     const data = await response.json();
-    return data; // 중복 여부에 대한 데이터 반환 (예시: { isDuplicate: true })
+    return data;
   } catch (error) {
     throw new Error("아이디 중복 확인에 실패했습니다.");
   }

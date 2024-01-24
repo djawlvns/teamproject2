@@ -1,7 +1,11 @@
+import React, { useState } from "react";
+import styled from "styled-components";
+
 export function Board() {
+  const Container = styled.div``;
   return (
     <>
-      <h1>Board</h1>
+      <Container></Container>;
     </>
   );
 }

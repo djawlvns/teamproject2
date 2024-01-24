@@ -1,6 +1,7 @@
+import { useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import styled from "styled-components";
-import { useRef, useState } from "react";
+import ProgressBar from "./ProgressBar";
 
 const Container = styled.div`
   position: relative;
@@ -18,21 +19,18 @@ const Container = styled.div`
     overflow: hidden;
   }
 `;
-const ProgressBox = styled.div`
+
+const PlayerCoverbox = styled.div`
+  width: 1500px;
+  height: 800px;
   position: absolute;
-  bottom: 5px;
-  width: 100%;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  font-size: 1rem;
-  color: #fff;
+  z-index: 10;
+  top: 0;
+  left: 0;
 `;
 
-export function Player(props) {
+export function Player({ playing, setPlaying }) {
   //상위 컴포넌트에 playing,setPlayin true로 정의
-  const { playing, setPlaying, PlayList } = props;
   const playerRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [played, setPlayed] = useState(0);
@@ -46,9 +44,15 @@ export function Player(props) {
     setPlaying(true);
   };
 
+  const onSeek = (value) => {
+    setPlayed(value);
+    playerRef.current.seekTo(value);
+  };
+
   return (
     <>
       <Container>
+        <PlayerCoverbox />
         <ReactPlayer
           url={curr} // 영상url삽입
           ref={playerRef}
@@ -59,26 +63,10 @@ export function Player(props) {
           height="800px"
           onEnded={onEnded} // 현재 재생중인 영상 종료시 호출
           onReady={() => setReady(true)} // 영상이 로드되어 준비된 상태
-          onDuration={setDuration}
+          onDuration={(value) => setDuration(value)}
           onProgress={({ played }) => setPlayed(played)}
         />
-        <ProgressBox>
-          <time dataTime="P1S">{formatTime(played * duration)}</time>
-          <input
-            type="range"
-            min="0"
-            max="0.999999"
-            step="any"
-            value={played}
-            disabled={!ready}
-            styled={{ "--progress": `${played * 100}%` }}
-            onChange={(e) => {
-              setPlayed(parseFloat(e.target.value)); //재생 포인트 위치 실시간변경
-              playerRef.current.seekTo(parseFloat(e.target.value)); //실제 영상 재생 위치 실시간 변경
-            }}
-          />
-          <time dateTime="P1S">{formatTime(duration)}</time>
-        </ProgressBox>
+        <ProgressBar played={played} duration={duration} onSeek={onSeek} />
       </Container>
     </>
   );

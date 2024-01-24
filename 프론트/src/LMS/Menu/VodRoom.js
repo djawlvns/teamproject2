@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import React, { useState } from "react";
+import Bookmark from "../Mypage/Bookmark";
 
 const Container = styled.div`
   display: flex;
@@ -36,7 +37,8 @@ const Text = styled.div``;
 
 export function VodRoom() {
   const [bookmarkedLectures, setBookmarkedLectures] = useState([]);
-  const toggleBookmark = (lectureId) => {
+
+  const toggleBookmark = (lectureId, lectures) => {
     // 해당 강의를 즐겨찾기 했는지 확인하고, 상태를 업데이트.
     const lectureIndex = bookmarkedLectures.findIndex(
       (lecture) => lecture.id === lectureId
@@ -45,10 +47,13 @@ export function VodRoom() {
 
     if (lectureIndex === -1) {
       // 즐겨찾기 목록에 없으면 추가
+      const selectedLecture = lectures.find((lec) => lec.id === lectureId);
       newBookmarkedLectures.push({
-        id: lectureId,
-        title: "강의 제목",
-        date: "2024.01.04",
+        id: selectedLecture.id,
+        title: selectedLecture.title,
+        date: selectedLecture.date,
+        thumbnail: selectedLecture.thumbnail,
+        description: selectedLecture.description,
       });
     } else {
       // 즐겨찾기 목록에 있으면 제거
@@ -58,9 +63,23 @@ export function VodRoom() {
     setBookmarkedLectures(newBookmarkedLectures);
   };
 
-  const [lectures, setLectures] = useState([
-    { id: 1, title: "강의 1" },
-    { id: 2, title: "강의 2" },
+  const [lectures] = useState([
+    {
+      id: 1,
+      thumbnail:
+        "https://nomadcoders.co/_next/image?url=https%3A%2F%2Fd1telmomo28umc.cloudfront.net%2Fmedia%2Fpublic%2Favatars%2FkokoaThumbnail_h8OxaLt_WUzjUct.jpg&w=1920&q=75",
+      title: "카톡 클론코딩",
+      date: "2024.01.08",
+      description: "HTML, CSS, Github",
+    },
+    {
+      id: 2,
+      thumbnail:
+        "https://nomadcoders.co/_next/image?url=https%3A%2F%2Fd1telmomo28umc.cloudfront.net%2Fmedia%2Fpublic%2Favatars%2FytThumbnail_rtMv4Du.jpg&w=1080&q=75.jpg",
+      title: "유튜브 클론코딩",
+      date: "2024.01.08",
+      description: "유튜브 백엔드 + 프론트엔드 + 배포",
+    },
   ]);
 
   return (
@@ -85,6 +104,7 @@ export function VodRoom() {
             ))}
           </VodList>
         </VodListContainer>
+        <Bookmark bookmarkedLectures={bookmarkedLectures} />
       </Container>
     </>
   );
