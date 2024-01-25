@@ -59,12 +59,6 @@ public class User {
 	private Set<Role> role;
 
 
-	@ManyToMany
-	@JoinTable(name = "user_bookmark", joinColumns = {
-			@JoinColumn(name = "id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "bookmark_id", referencedColumnName = "bookmark_id")
-			})
-	private Set<BookMark> bookmark;
 
 	@ManyToMany
 	@JoinTable(name = "user_lecture", joinColumns = {
@@ -175,12 +169,7 @@ public class User {
 	public void setRoles(Set<Role> role) {
 		this.role = role;
 	}
-	public Set<BookMark> getBookMark(){
-		return bookmark;
-	}
-	public void setBookmark(Set<BookMark> bookmark) {
-		this.bookmark = bookmark;
-	}
+
 	public Set<Vod> getVod(){
 		return vod;
 	}
