@@ -13,6 +13,7 @@ export function Schedule() {
     <>
       <StyledDiv>
         <h2>강의 시간표</h2>
+        {/* <p>{scheduleText}</p> */}
       </StyledDiv>
     </>
   );

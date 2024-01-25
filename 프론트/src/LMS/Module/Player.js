@@ -34,6 +34,7 @@ export function Player({ playing, setPlaying }) {
   const playerRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [played, setPlayed] = useState(0);
+  const [liveCheck, setliveCheck] = useState(false);
   const [duration, setDuration] = useState(0); //총 재생시간
   const [curr, setCurr] = useState(
     "https://youtu.be/dh4hdtZ00EU?si=qbQcbmhsOLRHdKJC"
@@ -45,8 +46,14 @@ export function Player({ playing, setPlaying }) {
   };
 
   const onSeek = (value) => {
-    setPlayed(value);
-    playerRef.current.seekTo(value);
+    if (playerRef.current) {
+      setPlayed(value);
+      playerRef.current.seekTo(value);
+    }
+    if (!playing) {
+      onSeek(value, played);
+      console.log("이거 호출 되니?");
+    }
   };
 
   return (
@@ -66,7 +73,9 @@ export function Player({ playing, setPlaying }) {
           onDuration={(value) => setDuration(value)}
           onProgress={({ played }) => setPlayed(played)}
         />
-        <ProgressBar played={played} duration={duration} onSeek={onSeek} />
+        {liveCheck ? null : (
+          <ProgressBar played={played} duration={duration} onSeek={onSeek} />
+        )}
       </Container>
     </>
   );

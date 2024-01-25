@@ -1,5 +1,18 @@
 import styled from "styled-components";
 import BookmarkPage from "./BookmarkPage";
+import { Link } from "react-router-dom";
+
+const BookmarkBar = styled.div`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: gray;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+`;
 
 const BookmarkListBox = styled.div`
   padding: 50px 100px 0px 100px;
@@ -36,22 +49,30 @@ const Title = styled.div``;
 
 const Text = styled.div``;
 
-const bookmarkedLectures = [];
-
-const Bookmark = () => (
+const Bookmark = ({ bookmarkedVods, toggleBookmark }) => (
   <BookmarkListBox>
-    <BookmarkList>즐겨찾는 강의</BookmarkList>
-    {bookmarkedLectures.map((lecture) => (
-      <BookmarkBox key={lecture.id}>
-        <Thumbnail src={lecture.thumbnail} alt={lecture.title} />
-        <TitleBox>
-          <Title>{lecture.title}</Title>
-          <Text>
-            {lecture.date} - {lecture.description}
-          </Text>
-        </TitleBox>
-      </BookmarkBox>
-    ))}
+    <BookmarkBar>즐겨찾기</BookmarkBar>
+    <ul>
+      {bookmarkedVods &&
+        bookmarkedVods.map((vod) => (
+          <li key={vod.id}>
+            <BookmarkBox>
+              <Thumbnail src={vod.thumbnail} alt={vod.title} />
+              <TitleBox>
+                <Title>{vod.title}</Title>
+                <Text>
+                  {vod.date} - {vod.description}
+                </Text>
+                <button onClick={() => toggleBookmark(vod)}>
+                  {bookmarkedVods.some((v) => v.id === vod.id)
+                    ? "즐겨찾기 해제"
+                    : "즐겨찾기 추가"}
+                </button>
+              </TitleBox>
+            </BookmarkBox>
+          </li>
+        ))}
+    </ul>
   </BookmarkListBox>
 );
 

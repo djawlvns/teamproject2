@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import { login } from "../Api/api";
 import { MyContext } from "../LayoutApp";
 import { NavLink } from "react-router-dom";
 
@@ -233,63 +232,81 @@ const Join = styled.a`
 
 export function Login() {
   const [isChecked, setIsChecked] = useState(false);
-
   const handleCheck = () => {
     setIsChecked(!isChecked);
   };
-  const [username, setUsername] = useState("");
+  const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
-  const [userLogin, setUserLogin] = useState(null);
+  const [loginData, setLoginData] = useState(null);
   const [loggingIn, setLoggingIn] = useState(false);
-  const { loginState, setLoginState } = useContext(MyContext);
+  const { tokenState, setTokenState } = useContext(MyContext);
+  const [token, setToken] = useState(null);
   const navigate = useNavigate();
   const { data, isLoading, refetch } = useQuery(
     "login",
-    () => {
-      if (userLogin) {
+    async () => {
+      if (loginData) {
         setLoggingIn(true);
-        return login(userLogin);
+        const response = await apiLoginByFetch(loginId, password);
+        return response;
       }
     },
     { retry: 0 }
   );
 
+  async function onLogin() {
+    const response = await apiLoginByFetch(loginId, password);
+    if (response.resultCode === "SUCCESS") {
+      // console.log(response.data);
+      setToken(response.data.token);
+    } else {
+      console.log(response.data);
+    }
+  }
   useEffect(() => {
     if (data) {
-      if (data.resultCode === "SUCCES" && userLogin) {
+      if (data.resultCode === "SUCCES" && loginData) {
         console.log(data);
-        localStorage.setItem(
-          "loginState",
-          JSON.stringify({ id: userLogin.username })
+        sessionStorage.setItem(
+          "tokenState",
+          JSON.stringify({ id: loginData.loginId })
         );
-        setLoginState({ id: userLogin.username });
-        navigate("/");
+        setTokenState({ id: loginData.loginId });
+        navigate("/main");
       } else if (data.resultCode === "ERROR") {
         navigate("/login");
       }
       setLoggingIn(false);
     }
-  }, [data]);
+  }, [data, loginData, setTokenState, navigate]);
 
-  console.log(loggingIn);
   useEffect(() => {
     refetch();
-  }, [userLogin]);
+  }, [loginData, refetch]);
 
-  function onSubmit(e) {
+  useEffect(() => {
+    if (token) {
+      sessionStorage.setItem("token", token);
+    } else {
+      sessionStorage.setItem("token", null);
+    }
+  }, [token]);
+
+  const onSubmit = async (e) => {
     e.preventDefault();
     const user = {
-      username: username,
+      loginId: loginId,
       password: password,
     };
-    setUserLogin(user);
-  }
+    setLoginData(user);
+  };
+
   return (
     <>
-      {loggingIn ? (
-        <h1>로그인중입니다... </h1>
-      ) : loginState?.id ? (
-        <h1> 이미 로그인되어 있습니다. {loginState.id}</h1>
+      {token ? (
+        navigate("/main")
+      ) : tokenState?.id ? (
+        <h1> 이미 로그인되어 있습니다. {tokenState.id}</h1>
       ) : (
         <>
           <CenteredContent />
@@ -304,9 +321,9 @@ export function Login() {
                         <Eplaceholder>
                           <Input
                             placeholder="아이디"
-                            id="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            id="loginId"
+                            value={loginId}
+                            onChange={(e) => setLoginId(e.target.value)}
                           />
                           <Input
                             placeholder="비밀번호"
@@ -317,7 +334,7 @@ export function Login() {
                           />
                         </Eplaceholder>
                         <Btnbox>
-                          <Button type="submit">로그인</Button>
+                          <Button onClick={onLogin}>로그인</Button>
                         </Btnbox>
                       </form>
                       <Findinfo>
@@ -362,4 +379,29 @@ export function Login() {
       )}
     </>
   );
+}
+
+function apiLoginByFetch(loginId, password) {
+  return fetch("http://localhost:8080/api/authenticate", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      loginId: loginId,
+      password: password,
+    }),
+  })
+    .then((response) => response.json())
+    .catch((err) => err);
+}
+
+export function apiGetMyInfo() {
+  const token = sessionStorage.getItem("token");
+  return fetch("http://localhost:8080/api/user", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }

@@ -16,11 +16,11 @@ import { Register } from "./HeaderBar/Register";
 import { Sregister } from "./HeaderBar/Sregister";
 import { Tregister } from "./HeaderBar/Tregister";
 import { Layout2 } from "./Layout2";
-// import { Me } from "./Mypage/MyInfo";
-import { Bookmark } from "./Mypage/Bookmark";
-import { Grade } from "./Mypage/Grade";
-import { Homework } from "./Mypage/Homework";
-import { ClassCheck } from "./Mypage/ClassCheck";
+import { Free } from "./Board/Free";
+import { Suggestion } from "./Board/Suggestion";
+import { Qna } from "./Board/Qna";
+import { LiveRoom } from "./Menu/LiveRoom";
+import VideoRoom from "./Menu/VideoRoom";
 
 const client = new QueryClient();
 export const MyContext = createContext();
@@ -31,7 +31,7 @@ export function LayoutApp() {
   return (
     <>
       <QueryClientProvider client={client}>
-        <MyContext.Provider value={(myGlobalState, setMyGlobalState)}>
+        <MyContext.Provider value={{ myGlobalState, setMyGlobalState }}>
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Login />}>
@@ -45,12 +45,18 @@ export function LayoutApp() {
                 <Route path="tregister" element={<Tregister />} />
               </Route>
               <Route path="/main" element={<Layout />}>
-                <Route index elemnet={<Layout />} />
+                <Route index element={<Home />} />
                 <Route path="home" element={<Home />} />
                 <Route path="logout" element={<Logout />} />
                 <Route path="classroom" element={<ClassRoom />} />
+                <Route path="classroom/live" element={<LiveRoom />} />
                 <Route path="vodroom" element={<VodRoom />} />
-                <Route path="board" element={<Board />} />
+                <Route path="videoroom/:videoId" element={<VideoRoom />} />
+                <Route path="board" element={<Board />}>
+                  <Route path="free" element={<Free />} />
+                  <Route path="suggestion" element={<Suggestion />} />
+                  <Route path="qna" element={<Qna />} />
+                </Route>
                 <Route path="mypage" element={<Mypage />} />
                 <Route path="notice" element={<Notice />} />
                 <Route path="schedule" element={<Schedule />} />

@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Route, Link, Routes } from "react-router-dom";
 import Bookmark from "../Mypage/Bookmark";
 
 const Container = styled.div`
@@ -12,10 +13,11 @@ const VodListContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 `;
 const VodBox = styled.div`
   display: flex;
-  width: 80%;
+  width: 1191px;
 `;
 const Vod = styled.div`
   width: 300px;
@@ -23,7 +25,7 @@ const Vod = styled.div`
   background-color: gray;
 `;
 const TextBox = styled.div`
-  width: 100%-300px;
+  width: 700px;
   height: 200px;
   position: relative;
   button {
@@ -35,41 +37,58 @@ const TextBox = styled.div`
 const Title = styled.div``;
 const Text = styled.div``;
 
+const getVideoURLById = (videoId) => {
+  switch (videoId) {
+    case "1":
+      return "https://www.youtube.com/3e8a113d-1ee4-4a44-9ad8-f4da6fcfa99b";
+    case "2":
+      return "https://www.youtube.com/3e8a113d-1ee4-4a44-9ad8-f4da6fcfa99b";
+    default:
+      return "https://www.youtube.com/3e8a113d-1ee4-4a44-9ad8-f4da6fcfa99b";
+  }
+};
+
 export function VodRoom() {
-  const [bookmarkedLectures, setBookmarkedLectures] = useState([]);
+  const [bookmarkedVods, setBookmarkedVods] = useState([]);
+  const [setVods] = useState([]);
 
-  const toggleBookmark = (lectureId, lectures) => {
-    // 해당 강의를 즐겨찾기 했는지 확인하고, 상태를 업데이트.
-    const lectureIndex = bookmarkedLectures.findIndex(
-      (lecture) => lecture.id === lectureId
-    );
-    const newBookmarkedLectures = [...bookmarkedLectures];
+  const toggleBookmark = (vod) => {
+    const isBookmarked = bookmarkedVods.some((v) => v.id === vod.id);
 
-    if (lectureIndex === -1) {
-      // 즐겨찾기 목록에 없으면 추가
-      const selectedLecture = lectures.find((lec) => lec.id === lectureId);
-      newBookmarkedLectures.push({
-        id: selectedLecture.id,
-        title: selectedLecture.title,
-        date: selectedLecture.date,
-        thumbnail: selectedLecture.thumbnail,
-        description: selectedLecture.description,
-      });
+    if (isBookmarked) {
+      // 북마크에서 제거
+      const updatedBookmarks = bookmarkedVods.filter((v) => v.id !== vod.id);
+      setBookmarkedVods(updatedBookmarks);
     } else {
-      // 즐겨찾기 목록에 있으면 제거
-      newBookmarkedLectures.splice(lectureIndex, 1);
+      // 북마크에 추가
+      setBookmarkedVods([...bookmarkedVods, vod]);
     }
-
-    setBookmarkedLectures(newBookmarkedLectures);
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // 데이터베이스 또는 API에서 VOD 정보를 가져오는 요청
+        const response = await fetch("YOUR_API_ENDPOINT");
+        const data = await response.json();
 
-  const [lectures] = useState([
+        // 가져온 데이터로 상태 업데이트
+        setVods(data);
+      } catch (error) {
+        console.error("Error fetching VOD data:", error);
+      }
+    };
+
+    // 데이터 로딩
+    fetchData();
+  }, []);
+  const [vods] = useState([
     {
       id: 1,
       thumbnail:
         "https://nomadcoders.co/_next/image?url=https%3A%2F%2Fd1telmomo28umc.cloudfront.net%2Fmedia%2Fpublic%2Favatars%2FkokoaThumbnail_h8OxaLt_WUzjUct.jpg&w=1920&q=75",
       title: "카톡 클론코딩",
       date: "2024.01.08",
+      url: "https://www.youtube.com/3e8a113d-1ee4-4a44-9ad8-f4da6fcfa99b",
       description: "HTML, CSS, Github",
     },
     {
@@ -78,6 +97,7 @@ export function VodRoom() {
         "https://nomadcoders.co/_next/image?url=https%3A%2F%2Fd1telmomo28umc.cloudfront.net%2Fmedia%2Fpublic%2Favatars%2FytThumbnail_rtMv4Du.jpg&w=1080&q=75.jpg",
       title: "유튜브 클론코딩",
       date: "2024.01.08",
+      url: "https://www.youtube.com/3e8a113d-1ee4-4a44-9ad8-f4da6fcfa99b",
       description: "유튜브 백엔드 + 프론트엔드 + 배포",
     },
   ]);
@@ -87,25 +107,40 @@ export function VodRoom() {
       <Container>
         <VodListContainer>
           <VodList>
-            {lectures.map((lecture) => (
-              <VodBox key={lecture.id}>
-                <Vod>VOD</Vod>
+            {vods.map((vod) => (
+              <VodBox key={vod.id}>
+                <Link to={`/main/videoroom/${vod.id}`}>
+                  <Vod>VOD</Vod>
+                </Link>
                 <TextBox>
-                  <Title>{lecture.title}</Title>
-                  <Text>{lecture.date}</Text>
-                  {/* 강의 즐겨찾기 토글 버튼 */}
-                  <button onClick={() => toggleBookmark(lecture.id)}>
-                    {bookmarkedLectures.some((lec) => lec.id === lecture.id)
-                      ? "즐겨찾기 해제"
-                      : "즐겨찾기 추가"}
-                  </button>
+                  <Title>{vod.title}</Title>
+                  <Text>{vod.date}</Text>
                 </TextBox>
+                <button
+                  id={`bookmark-button-${vod.id}`}
+                  onClick={() => toggleBookmark(vod)}
+                  disabled={bookmarkedVods.some((v) => v.id === vod.id)}
+                >
+                  {bookmarkedVods.some((v) => v.id === vod.id)
+                    ? "즐겨찾기 제거"
+                    : "즐겨찾기 추가"}
+                </button>
               </VodBox>
             ))}
           </VodList>
         </VodListContainer>
-        <Bookmark bookmarkedLectures={bookmarkedLectures} />
       </Container>
+      <Routes>
+        <Route
+          path="/main/bookmark"
+          element={
+            <Bookmark
+              bookmarkedVods={bookmarkedVods}
+              toggleBookmark={toggleBookmark}
+            />
+          }
+        />
+      </Routes>
     </>
   );
 }

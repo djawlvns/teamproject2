@@ -3,8 +3,6 @@ import React, { useState } from "react";
 import MyInfoComponent from "./Me";
 import ClassCheckComponent from "./ClassCheck";
 import BookmarkComponent from "./Bookmark";
-import GradeComponent from "./Grade";
-import HomeworkComponent from "./Homework";
 
 const Container = styled.div`
   display: flex;
@@ -42,10 +40,6 @@ export function Mypage() {
         return <ClassCheckComponent />;
       case "Bookmark":
         return <BookmarkComponent />;
-      case "Grade":
-        return <GradeComponent />;
-      case "Homework":
-        return <HomeworkComponent />;
       default:
         return null;
     }
@@ -60,10 +54,6 @@ export function Mypage() {
           </MenuItem>
           <MenuItem onClick={() => setSelectedMenu("Bookmark")}>
             즐겨찾기
-          </MenuItem>
-          <MenuItem onClick={() => setSelectedMenu("Grade")}>성적관리</MenuItem>
-          <MenuItem onClick={() => setSelectedMenu("Homework")}>
-            숙제관리
           </MenuItem>
         </MypageMenu>
         <MypageView>{renderSelectedComponent()}</MypageView>

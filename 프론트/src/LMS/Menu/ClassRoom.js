@@ -1,103 +1,95 @@
 import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import { Player } from "../Module/Player";
-import { PlayerBar } from "../Module/PlayerBar";
-import ProgressBar from "../Module/ProgressBar";
+import { LiveRoom } from "./LiveRoom.js";
+import { LiveSchedule } from "../Module/LiveSchedule.js";
 
 const Container = styled.div`
   width: 100vw;
-  height: 100%;
-`;
-const ClassContent = styled.div`
-  display: flex;
-  overflow: hidden;
-`;
-const ClassBoard = styled.div`
-  position: relative;
-  width: 1500px;
   height: 800px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
 `;
 
-const ClassBoardTxt = styled.div`
-  width: 100%;
+const ScheduleBox = styled.div`
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+`;
+
+const FilterBar = styled.div`
+  position: relative;
+  width: 60%;
   height: 50px;
+  display: flex;
+  border: 1px solid black;
+`;
+
+const TimeBox = styled.div`
+  width: calc(100% / 3);
+  height: 100%;
   display: flex;
   position: relative;
   justify-content: center;
-  font-size: 2rem;
-  z-index: 10;
+  align-items: center;
+  font-size: 1rem;
+`;
+const TimeBoxContent = styled.div`
+  margin-left: 15%;
 `;
 
-const Video = styled.iframe`
-  width: 100%;
+const ClassNameBox = styled.div`
+  width: calc(100% / 3);
   height: 100%;
-`;
-const ClassCheck = styled.div`
-  position: relative;
-  width: 300px;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
 `;
-
-const CheckBox = styled.div``;
-const Check = styled.button`
-  width: 200px;
-  height: 40px;
-  border: 1px solid gray;
-  border-radius: 4px;
-  background-color: white;
+const StartClassBox = styled.div`
+  width: calc(100% / 3);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
 `;
-
 export function ClassRoom() {
-  const [playing, setPlaying] = useState(false);
-  const playerRef = useRef(null);
-
-  //played,duration,onSeek 값 설정
-  const [played, setPlayed] = useState(0);
-  const [duration, setDuration] = useState(0);
-
-  const onSeek = (value) => {
-    if (playerRef.current) {
-      setPlayed(value);
-      playerRef.current.seekTo(value);
-    }
-  };
-
   return (
     <>
       <Container>
-        <ClassContent>
-          <ClassBoard>
-            <ClassBoardTxt>수업 동영상</ClassBoardTxt>
-            <Player
-              ref={playerRef}
-              playing={playing}
-              setPlaying={setPlaying}
-              onDuration={(value) => setDuration(value)}
-              onProgress={({ played }) => setPlayed(played)}
-            />
-          </ClassBoard>
-          <ClassCheck>
-            {/* 진행도 */}
-            <ProgressBar
-              played={played}
-              duration={duration}
-              onSeek={onSeek}
-              ref={playerRef}
-              playing={playing}
-              setPlaying={setPlaying}
-            />
-            {/* 재생멈춤 버튼 */}
-            <PlayerBar playing={playing} setPlaying={setPlaying} />
-            <CheckBox>
-              {/* 출석 체크 후 강의완료되면 수강완료 버튼으로 전환 */}
-              <Check>출석 체크</Check>
-            </CheckBox>
-          </ClassCheck>
-        </ClassContent>
+        <FilterBar>
+          <TimeBox>
+            <TimeBoxContent>시간</TimeBoxContent>
+          </TimeBox>
+          <ClassNameBox>강의명</ClassNameBox>
+          <StartClassBox>수강진행</StartClassBox>
+        </FilterBar>
+        <ScheduleBox>{RenderLiveSchedule()}</ScheduleBox>
       </Container>
     </>
   );
+}
+
+function RenderLiveSchedule() {
+  const liveSchedules = [];
+  const formatTime = (hour) => {
+    return hour < 10 ? `0${hour}` : `${hour}`;
+  };
+
+  for (let i = 1, j = 8; i <= 8; i++, j++) {
+    liveSchedules.push(
+      <LiveSchedule
+        key={`period${i}time${j}`}
+        period={`${i}교시`}
+        time={`(${formatTime(j)}:00 ~ ${formatTime(j)}:50)`}
+      />
+    );
+  }
+
+  return liveSchedules;
 }

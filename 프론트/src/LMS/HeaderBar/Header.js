@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Logout } from "./Logout";
+import { useState, useEffect } from "react";
 
 const Headerbar = styled.div`
   display: flex;
@@ -18,36 +20,79 @@ const Text = styled.div`
   right: 200px;
   top: 10px;
 `;
-const Logout = styled.div`
+const LogoutContainer = styled.div`
   position: absolute;
   right: 10px;
   top: 2px;
 `;
 
 export function Header() {
+  const [userName, setUserName] = useState(null);
+  const [hasToken, setHasToken] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const token = sessionStorage.getItem("token");
+
+        if (token && token !== "null") {
+          setHasToken(true);
+
+          const response = await apiGetMyInfo();
+          if (response.resultCode === "SUCCESS") {
+            setUserName(response.data.name);
+          } else {
+            console.log(response);
+          }
+        } else {
+          setHasToken(false);
+        }
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const handleLogoClick = () => {
+    if (hasToken) {
+      navigate("/main/home");
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <>
       <Headerbar>
         <Logo>
-          <Link
-            to="/main/home"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <h1>DWS</h1>
-          </Link>
+          <h1 onClick={handleLogoClick} style={{ cursor: "pointer" }}>
+            DWS
+          </h1>
         </Logo>
-        <Text>
-          <h3>~님 환영합니다</h3>
-        </Text>
-        <Logout>
-          <Link
-            to="/login"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <h5>로그아웃</h5>
-          </Link>
-        </Logout>
+        {hasToken && (
+          <>
+            <Text>
+              <h3>환영합니다 {userName}님</h3>
+            </Text>
+            <LogoutContainer>
+              <Logout />
+            </LogoutContainer>
+          </>
+        )}
       </Headerbar>
     </>
   );
+}
+
+export function apiGetMyInfo() {
+  const token = sessionStorage.getItem("token");
+  return fetch("http://localhost:8080/api/user", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(),
+  }).then((response) => response.json());
 }

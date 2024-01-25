@@ -67,7 +67,6 @@ const MyInfoComponent = () => (
   <ProfileContainer>
     <Profile>
       <ProfileBar>내 프로필</ProfileBar>
-      <Class>Backend-C#반</Class>
       <Name>김대우</Name>
       <Gender>남</Gender>
       <ID>DW001145</ID>

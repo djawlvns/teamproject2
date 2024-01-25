@@ -8,7 +8,7 @@ export function signUp(user) {
     body: JSON.stringify(user),
   }).then((response) => response.json());
 }
-
+// 아이디 중복확인
 export const checkDuplicateId = async (loginId) => {
   try {
     const response = await fetch(
@@ -33,38 +33,76 @@ export const checkDuplicateId = async (loginId) => {
   }
 };
 
-// 로그인
-export function login(user) {
-  console.log(user);
-  return fetch(`http://localhost:8080/api/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(user),
-  }).then((response) => response.json());
-}
+// export async function login(user) {
+//   try {
+//     console.log(user);
+
+//     const response = await fetch(`http://localhost:8080/api/login`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(user),
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: ${response.status}`);
+//     }
+
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.error("Error during login:", error);
+//     throw error; // Rethrow the error to be handled by the calling code
+//   }
+// }
 
 //북마크
-export const fetchBookmarkedLectures = () => {
-  return fetch(`http://localhost:8080/api/bookmarks`, {
+export const fetchBookmarkedLectures = async () => {
+  try {
+    const response = await fetch(`http://localhost:8080/api/bookmarks`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch bookmarked lectures");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching bookmarked lectures:", error);
+    return [];
+  }
+};
+
+// 게시판
+export function boardList(board) {
+  console.log(board);
+  return fetch(`http://localhost:8080/api/board`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
   }).then((response) => response.json());
+}
+
+const getAllVod = async () => {
+  try {
+    const response = await fetch("http://localhost:8080/api/vod");
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("VODs:", data);
+      // 데이터를 상태에 설정하거나 다른 작업 수행
+    } else {
+      console.error("Failed to get VODs");
+    }
+  } catch (error) {
+    console.error("Error getting VODs", error);
+  }
 };
-// {
-//   id: 1,
-//   thumbnail: "https://nomadcoders.co/_next/image?url=https%3A%2F%2Fd1telmomo28umc.cloudfront.net%2Fmedia%2Fpublic%2Favatars%2FkokoaThumbnail_h8OxaLt_WUzjUct.jpg&w=1920&q=75",
-//   title: "카톡 클론코딩",
-//   date: "2024.01.08",
-//   description: "HTML, CSS, Github",
-// },
-// {
-//   id: 2,
-//   thumbnail: "https://nomadcoders.co/_next/image?url=https%3A%2F%2Fd1telmomo28umc.cloudfront.net%2Fmedia%2Fpublic%2Favatars%2FytThumbnail_rtMv4Du.jpg&w=1080&q=75.jpg",
-//   title: "유튜브 클론코딩",
-//   date: "2024.01.08",
-//   description: "유튜브 백엔드 + 프론트엔드 + 배포",
-// }
+
+// 공지사항 불러오기
