@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tp.dws.enumstatus.ResultCode;
 import com.tp.dws.dto.BaseResponse;
 import com.tp.dws.dto.UserDto;
-import com.tp.dws.dto.UserLoginDto;
 import com.tp.dws.service.impl.UserServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,12 +43,6 @@ public class UserController {
 				HttpStatus.CREATED);
 	}
 
-	@PostMapping("/login")
-	public ResponseEntity<BaseResponse<Void>> login(@RequestBody @Valid UserLoginDto userLoginDto) {
-		return new ResponseEntity<BaseResponse<Void>>(
-				userServiceImpl.login(userLoginDto),
-				HttpStatus.OK);
-	}
 	
     @GetMapping("/user")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")

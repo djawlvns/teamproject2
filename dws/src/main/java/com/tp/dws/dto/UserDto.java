@@ -116,8 +116,6 @@ public class UserDto {
 	}
 
 
-
-
 	public Set<RoleDto> getRoleDtoSet() {
 		return roleDtoSet;
 	}
@@ -135,7 +133,7 @@ public class UserDto {
 				.map(role -> new RoleDto(role.getRoleName()))
 				.collect(Collectors.toSet());
 		
-		return new UserDto(user.getLoginId(), null, user.getName(), null,null,null, roleDtoSet);
+		return new UserDto(user.getLoginId(), null, user.getName(), null,null,user.getEmail(), roleDtoSet);
 	}
 
 }
