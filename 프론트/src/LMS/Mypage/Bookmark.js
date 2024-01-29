@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import BookmarkPage from "./BookmarkPage";
-import { Link } from "react-router-dom";
 
 const BookmarkBar = styled.div`
   width: 100%;

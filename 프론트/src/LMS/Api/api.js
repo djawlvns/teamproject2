@@ -60,7 +60,7 @@ export const checkDuplicateId = async (loginId) => {
 //북마크
 export const fetchBookmarkedLectures = async () => {
   try {
-    const response = await fetch(`http://localhost:8080/api/bookmarks`, {
+    const response = await fetch(`http://localhost:8080/api/bookmark`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -68,6 +68,7 @@ export const fetchBookmarkedLectures = async () => {
     });
 
     if (!response.ok) {
+      const errorMessage = await response.text();
       throw new Error("Failed to fetch bookmarked lectures");
     }
 

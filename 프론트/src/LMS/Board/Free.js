@@ -7,6 +7,7 @@ const Container = styled.div`
   min-height: 600px;
   padding-left: 0;
   padding-right: 0;
+  position: relative;
 `;
 
 const Tablebody = styled.div`
@@ -25,6 +26,14 @@ const Table = styled.table`
   border-spacing: 0;
 `;
 
+const ButtonContainer = styled.div`
+  position: absolute;
+  top: 8%;
+  right: 17%;
+  margin: 20px;
+`;
+const WriteButton = styled.button``;
+
 export function Free() {
   const [data, setData] = useState([]);
 
@@ -33,7 +42,7 @@ export function Free() {
     const fetchData = async () => {
       try {
         const response = await boardList();
-        const filteredData = response.data.filter(
+        const filteredData = response.data.data.filter(
           (item) => item.category === 1
         );
         setData(filteredData);
@@ -44,6 +53,10 @@ export function Free() {
 
     fetchData();
   }, []);
+
+  const handleWriteButtonClick = () => {
+    console.log("클릭");
+  };
   return (
     <>
       <Container>
@@ -76,6 +89,9 @@ export function Free() {
             </tbody>
           </Table>
         </Tablebody>
+        <ButtonContainer>
+          <WriteButton onClick={handleWriteButtonClick}>글쓰기</WriteButton>
+        </ButtonContainer>
       </Container>
     </>
   );

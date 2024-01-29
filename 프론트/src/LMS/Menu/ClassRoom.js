@@ -5,16 +5,17 @@ import { LiveRoom } from "./LiveRoom.js";
 import { LiveSchedule } from "../Module/LiveSchedule.js";
 
 const Container = styled.div`
-  width: 100vw;
+  width: 1100px;
   height: 800px;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+  padding: 20px;
 `;
 
 const ScheduleBox = styled.div`
-  width: 60%;
+  width: 1100px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -23,7 +24,7 @@ const ScheduleBox = styled.div`
 
 const FilterBar = styled.div`
   position: relative;
-  width: 60%;
+  width: 1100px;
   height: 50px;
   display: flex;
   border: 1px solid black;

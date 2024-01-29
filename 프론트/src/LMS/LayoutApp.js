@@ -21,6 +21,7 @@ import { Suggestion } from "./Board/Suggestion";
 import { Qna } from "./Board/Qna";
 import { LiveRoom } from "./Menu/LiveRoom";
 import VideoRoom from "./Menu/VideoRoom";
+import { Define } from "./Define";
 
 const client = new QueryClient();
 export const MyContext = createContext();
@@ -52,6 +53,7 @@ export function LayoutApp() {
                 <Route path="classroom/live" element={<LiveRoom />} />
                 <Route path="vodroom" element={<VodRoom />} />
                 <Route path="videoroom/:videoId" element={<VideoRoom />} />
+                <Route path="define" element={<Define />} />
                 <Route path="board" element={<Board />}>
                   <Route path="free" element={<Free />} />
                   <Route path="suggestion" element={<Suggestion />} />

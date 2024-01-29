@@ -6,6 +6,7 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   background-color: darkgrey;
+  padding: 20px;
 `;
 
 const TimeBox = styled.div`
@@ -24,7 +25,7 @@ const Period = styled.div`
 const Time = styled.div`
   display: flex;
   justify-content: center;
-  width: 50%;
+  width: 60%;
   margin-left: -6%;
 `;
 

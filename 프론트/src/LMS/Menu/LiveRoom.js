@@ -31,7 +31,7 @@ const ClassBoardTxt = styled.div`
 `;
 
 export function LiveRoom() {
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(true);
   const playerRef = useRef(null);
 
   //played,duration,onSeek 값 설정

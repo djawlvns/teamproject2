@@ -34,7 +34,7 @@ export function Player({ playing, setPlaying }) {
   const playerRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [played, setPlayed] = useState(0);
-  const [liveCheck, setliveCheck] = useState(false);
+  const [liveCheck, setliveCheck] = useState(true);
   const [duration, setDuration] = useState(0); //총 재생시간
   const [curr, setCurr] = useState(
     "https://youtu.be/dh4hdtZ00EU?si=qbQcbmhsOLRHdKJC"
