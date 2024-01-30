@@ -31,3 +31,8 @@
 // {"loginId": "test8", "password": "qqq111@@@", "name": "7테스트", "birthDate": "2000-01-01", "gender": "MAN", "email": "test8@naver.com"},
 // {"loginId": "test9", "password": "qqq111@@@", "name": "8테스트", "birthDate": "2000-01-01", "gender": "MAN", "email": "test9@naver.com"},
 // {"loginId": "test10", "password": "qqq111@@@", "name": "9테스트", "birthDate": "2000-01-01", "gender": "MAN", "email": "test10@naver.com"}
+
+// drop database dws;
+// create database dws;
+// use dws;
+// show tables;

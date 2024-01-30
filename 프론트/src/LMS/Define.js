@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
+import React from "react";
 
 const Container = styled.div`
   width: 100%;
@@ -32,17 +34,60 @@ const Text = styled.div`
   }
 `;
 const ListTitle = styled.div`
-  color: gray;
+  color: #404040;
   margin-bottom: 20px;
 `;
-const List = styled.div``;
-const No1 = styled.div``;
-const No2 = styled.div``;
-const No3 = styled.div``;
-const No4 = styled.div``;
-const Maintitle = styled.div``;
-const Maintext = styled.div``;
-
+const List = styled.div`
+  color: #727272;
+  margin-bottom: 100px;
+`;
+const MainBox = styled.div`
+  margin-bottom: 30px;
+`;
+const Maintitle = styled.div`
+  h2 {
+    color: #404040;
+  }
+  margin-bottom: 20px;
+`;
+const Maintext = styled.div`
+  h5 {
+    color: #727272;
+    margin-bottom: 20px;
+  }
+  h3 {
+    color: #696969;
+  }
+  h2 {
+    color: #696969;
+  }
+`;
+const GoVodroomBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  button {
+    width: 150px;
+    height: 50px;
+    font-size: 16px;
+    border: 1px solid #3c4751;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0);
+    color: #3c4751;
+    transition: background-color 0.3s;
+  }
+  button:hover {
+    background-color: #3c4751;
+    color: white;
+  }
+  h3 {
+    color: plum;
+    margin-bottom: 10px;
+  }
+`;
 export function Define() {
   return (
     <>
@@ -97,7 +142,7 @@ export function Define() {
             <h3>3.왜 코딩을 배우면 좋을까? 코딩을 배우는 이유, 코딩의 장점 </h3>
             <h3>4.코딩 공부를 시작하는 방법</h3>
           </List>
-          <No1>
+          <MainBox>
             <Maintitle>
               <h2>1. 코딩(Coding)이란?</h2>
             </Maintitle>
@@ -138,8 +183,8 @@ export function Define() {
                 프로그래밍의 차이점은 무엇인지 짚고 넘어가도록 해요.
               </h5>
             </Maintext>
-          </No1>
-          <No2>
+          </MainBox>
+          <MainBox>
             <Maintitle>
               <h2>2. 프로그래밍(Programming)이란?</h2>
             </Maintitle>
@@ -167,8 +212,8 @@ export function Define() {
                 같아요.
               </h5>
             </Maintext>
-          </No2>
-          <No3>
+          </MainBox>
+          <MainBox>
             <Maintitle>
               <h2>3. 왜 코딩을 배우면 좋을까? 코딩을 배우는 이유</h2>
             </Maintitle>
@@ -222,8 +267,8 @@ export function Define() {
                 될 겁니다.
               </h5>
             </Maintext>
-          </No3>
-          <No4>
+          </MainBox>
+          <MainBox>
             <Maintitle>
               <h2>4. 코딩 공부를 시작하는 방법</h2>
             </Maintitle>
@@ -260,7 +305,13 @@ export function Define() {
                 고려해볼 수 있겠죠.
               </h5>
             </Maintext>
-          </No4>
+          </MainBox>
+          <GoVodroomBtn>
+            <h3>누구나 쉽게 배울 수 있는 웹개발 강의 보러가기</h3>
+            <NavLink to="/main/VodRoom">
+              <button>강의보러가기→</button>
+            </NavLink>
+          </GoVodroomBtn>
         </TitleBox>
       </Container>
     </>

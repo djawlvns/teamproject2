@@ -45,12 +45,14 @@ export function VodRoom() {
   const [vods, setVods] = useState([]);
 
   const toggleBookmark = async (vod) => {
+    const token = sessionStorage.getItem("token");
     try {
       const isBookmarked = bookmarkedVods.some((v) => v.id === vod.id);
 
       if (isBookmarked) {
         // 북마크에서 제거
         const updatedBookmarks = bookmarkedVods.filter((v) => v.id !== vod.id);
+        console.log(updatedBookmarks);
         setBookmarkedVods(updatedBookmarks);
       } else {
         // 북마크에 추가
@@ -58,17 +60,18 @@ export function VodRoom() {
       }
 
       // 서버에 북마크 정보 업데이트
-      await fetch("http://localhost:8080/${vod.id}/bookmark/test", {
+      const response = await fetch("http://localhost:8080/api/bookmark", {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify({ vodId: vod.id }),
       });
-      console.log("addVodToBookmark");
+      console.log(isBookmarked);
       // 성공적으로 서버에 업데이트되면, 서버에서 다시 북마크 목록을 가져옴
       const updatedBookmarksResponse = await fetch(
-        "http://localhost:8080/${vod.id}/bookmark"
+        "http://localhost:8080/api/bookmark"
       );
       const updatedBookmarks = await updatedBookmarksResponse.json();
       setBookmarkedVods(updatedBookmarks);

@@ -22,6 +22,8 @@ import { Qna } from "./Board/Qna";
 import { LiveRoom } from "./Menu/LiveRoom";
 import VideoRoom from "./Menu/VideoRoom";
 import { Define } from "./Define";
+import { Adminpage } from "./Admin/Adminpage";
+import { Profile } from "./Admin/Profile";
 
 const client = new QueryClient();
 export const MyContext = createContext();
@@ -62,6 +64,8 @@ export function LayoutApp() {
                 <Route path="mypage" element={<Mypage />} />
                 <Route path="notice" element={<Notice />} />
                 <Route path="schedule" element={<Schedule />} />
+                <Route path="adminpage" element={<Adminpage />} />
+                <Route path="profile" element={<Profile />} />
                 <Route path="*" element={<Error />} />
               </Route>
             </Routes>
