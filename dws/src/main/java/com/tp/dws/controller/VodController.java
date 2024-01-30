@@ -47,11 +47,5 @@ public class VodController {
 				HttpStatus.OK);
 	}
 	
-	@PostMapping("/{vodId}/bookmark/{userId}")
-    public ResponseEntity<BaseResponse<Void>> addVodToBookmark(
-            @PathVariable Long vodId,
-            @PathVariable Long userId) {
-        BaseResponse<Void> response = vodServiceImpl.addVodToBookmark(vodId, userId);
-        return ResponseEntity.ok(response);
-    }
+
 }

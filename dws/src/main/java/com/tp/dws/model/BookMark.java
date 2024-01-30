@@ -30,6 +30,9 @@ public class BookMark {
     @Column(nullable = false)
     private String description;
     
+    @Column(nullable = false)
+    private String url;
+    
     @ManyToOne
     @JoinColumn(name = "vod_id", nullable = false)
     private Vod vod;
@@ -44,13 +47,15 @@ public class BookMark {
 
 
 
-	public BookMark(Long id, String thumbnail, String title, String date, String description, Vod vod, User user) {
+	public BookMark(Long id, String thumbnail, String title, String date, String description, String url, Vod vod,
+			User user) {
 		super();
 		this.id = id;
 		this.thumbnail = thumbnail;
 		this.title = title;
 		this.date = date;
 		this.description = description;
+		this.url = url;
 		this.vod = vod;
 		this.user = user;
 	}
@@ -61,40 +66,70 @@ public class BookMark {
 		return id;
 	}
 
+
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+
 
 	public String getThumbnail() {
 		return thumbnail;
 	}
 
+
+
 	public void setThumbnail(String thumbnail) {
 		this.thumbnail = thumbnail;
 	}
+
+
 
 	public String getTitle() {
 		return title;
 	}
 
+
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
+
 
 	public String getDate() {
 		return date;
 	}
 
+
+
 	public void setDate(String date) {
 		this.date = date;
 	}
+
+
 
 	public String getDescription() {
 		return description;
 	}
 
+
+
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+
+
+	public String getUrl() {
+		return url;
+	}
+
+
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 
@@ -120,6 +155,7 @@ public class BookMark {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
 
 	
     

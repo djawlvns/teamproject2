@@ -6,4 +6,5 @@ import com.tp.dws.model.Vod;
 
 public interface VodRepository extends JpaRepository<Vod, Long> {
 
+	Vod findByTitle(String title);
 }
