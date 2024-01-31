@@ -1,5 +1,6 @@
 package com.tp.dws.service.impl;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,16 +34,13 @@ public class BookMarkServiceImpl implements BookMarkService {
 	}
 	
 	public BaseResponse<Void> createBookMark(BookMarkDto bookmarkDto) {
-		Vod vod = vodRepository.findByTitle(bookmarkDto.getVodname());
-		if(vod == null) {
-			throw new InvalidRequestException("Invald Vod", "동영상이 존재하지 않습니다.");
-		}
 		BookMark bookmark = new BookMark();
 		bookmark.setThumbnail(bookmarkDto.getThumbnail());
 		bookmark.setDescription(bookmarkDto.getDescription());
 		bookmark.setTitle(bookmarkDto.getTitle());
 		bookmark.setDate(bookmarkDto.getData());
 		bookmark.setUrl(bookmarkDto.getUrl());
+		
 		
 		bookmarkRepository.save(bookmark);
 		return new BaseResponse<>(

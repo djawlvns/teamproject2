@@ -1,5 +1,7 @@
 package com.tp.dws.model;
 
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -47,8 +49,7 @@ public class BookMark {
 
 
 
-	public BookMark(Long id, String thumbnail, String title, String date, String description, String url, Vod vod,
-			User user) {
+	public BookMark(Long id, String thumbnail, String title, String date, String description, String url ) {
 		super();
 		this.id = id;
 		this.thumbnail = thumbnail;
@@ -56,8 +57,6 @@ public class BookMark {
 		this.date = date;
 		this.description = description;
 		this.url = url;
-		this.vod = vod;
-		this.user = user;
 	}
 
 
