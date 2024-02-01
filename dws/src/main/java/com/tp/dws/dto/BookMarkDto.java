@@ -1,9 +1,5 @@
 package com.tp.dws.dto;
 
-
-
-import java.util.Set;
-
 import jakarta.validation.constraints.NotBlank;
 
 public class BookMarkDto {
@@ -15,7 +11,7 @@ public class BookMarkDto {
 	private String title;
 	
 	@NotBlank
-	private String data;
+	private String date;
 	
 	@NotBlank
 	private String description;
@@ -23,9 +19,9 @@ public class BookMarkDto {
 	@NotBlank
 	private String url;
 	
-	private Set<VodDto> vodDtoSet;
+	private Long vodId;
 	
-	private Set<UserDto> userDtoSet;
+	private Long userId;
 
 
 	public BookMarkDto() {
@@ -33,16 +29,16 @@ public class BookMarkDto {
 	}
 
 
-	public BookMarkDto(@NotBlank String thumbnail, @NotBlank String title, @NotBlank String data,
-			@NotBlank String description, @NotBlank String url, Set<VodDto> vodDtoSet, Set<UserDto> userDtoSet) {
+	public BookMarkDto(@NotBlank String thumbnail, @NotBlank String title, @NotBlank String date,
+			@NotBlank String description, @NotBlank String url, Long vodId, Long userId) {
 		super();
 		this.thumbnail = thumbnail;
 		this.title = title;
-		this.data = data;
+		this.date = date;
 		this.description = description;
 		this.url = url;
-		this.vodDtoSet = vodDtoSet;
-		this.userDtoSet = userDtoSet;
+		this.vodId = vodId;
+		this.userId = userId;
 	}
 
 
@@ -66,13 +62,13 @@ public class BookMarkDto {
 	}
 
 
-	public String getData() {
-		return data;
+	public String getDate() {
+		return date;
 	}
 
 
-	public void setData(String data) {
-		this.data = data;
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 
@@ -96,24 +92,26 @@ public class BookMarkDto {
 	}
 
 
-	public Set<VodDto> getVodDtoSet() {
-		return vodDtoSet;
+	public Long getVodId() {
+		return vodId;
 	}
 
 
-	public void setVodDtoSet(Set<VodDto> vodDtoSet) {
-		this.vodDtoSet = vodDtoSet;
+	public void setVodId(Long vodId) {
+		this.vodId = vodId;
 	}
 
 
-	public Set<UserDto> getUserDtoSet() {
-		return userDtoSet;
+	public Long getUserId() {
+		return userId;
 	}
 
 
-	public void setUserDtoSet(Set<UserDto> userDtoSet) {
-		this.userDtoSet = userDtoSet;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
+
+
 	
 
 	
