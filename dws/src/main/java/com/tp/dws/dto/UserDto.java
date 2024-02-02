@@ -148,9 +148,11 @@ public class UserDto {
 		Set<RoleDto> roleDtoSet = user.getrRoles().stream()
 				.map(role -> new RoleDto(role.getRoleName()))
 				.collect(Collectors.toSet());
-		Long userId = user.getId();
 		
-		return new UserDto(userId, user.getLoginId(), null, user.getName(), null,null,user.getEmail(), roleDtoSet);
+		Long userId = user.getId();
+		String genderDesc = user.getGender().getDesc();	
+		
+		return new UserDto(userId, user.getLoginId(), null, user.getName(), null,genderDesc,user.getEmail(), roleDtoSet);
 	}
 
 }
