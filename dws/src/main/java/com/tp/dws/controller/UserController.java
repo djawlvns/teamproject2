@@ -1,5 +1,6 @@
 package com.tp.dws.controller;
 
+import com.tp.dws.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,8 @@ import com.tp.dws.service.impl.UserServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -70,5 +73,24 @@ public class UserController {
                 ResultCode.SUCCESS.getMsg()
         ));
     }
-    
+
+    @GetMapping("/allUsers")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<BaseResponse<List<User>>> getAllUsers(HttpServletRequest request) {
+        return ResponseEntity.ok(new BaseResponse<>(
+                ResultCode.SUCCESS.name(),
+                userServiceImpl.getAllUsers(),
+                ResultCode.SUCCESS.getMsg()
+        ));
+    }
+
+    @GetMapping("/users/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<BaseResponse<User>> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(new BaseResponse<>(
+                ResultCode.SUCCESS.name(),
+                userServiceImpl.getUserById(id),
+                ResultCode.SUCCESS.getMsg()
+        ));
+    }
 }

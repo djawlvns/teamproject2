@@ -3,6 +3,8 @@ package com.tp.dws.service.impl;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -101,5 +103,20 @@ public class UserServiceImpl {
         User user = userRepository.findByLoginId(id);
         return user != null;
     }
+
+	public List<User> getAllUsers() {
+		List<User> userList = userRepository.findAll();
+		return userList;
+	}
+
+	public User getUserById(Long id) {
+		System.out.println(id);
+		Optional<User> user = userRepository.findById(id);
+		if (user.isEmpty()) {
+			return null;
+		}else {
+			return user.get();
+		}
+	}
 	
 }

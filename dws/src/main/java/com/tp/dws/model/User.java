@@ -3,6 +3,7 @@ package com.tp.dws.model;
 import java.time.LocalDate;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tp.dws.enumstatus.Gender;
 
 import jakarta.persistence.Column;
@@ -35,6 +36,7 @@ public class User {
 	private String loginId;
 
 	@Column(nullable = false, length = 100)
+	@JsonIgnore
 	private String password;
 
 	@Column(nullable = false, length = 30)
