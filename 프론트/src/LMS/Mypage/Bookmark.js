@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 
 const BookmarkBar = styled.div`
   width: 100%;
@@ -47,31 +48,35 @@ const Title = styled.div``;
 
 const Text = styled.div``;
 
-const Bookmark = ({ bookmarkedVods, toggleBookmark }) => (
-  <BookmarkListBox>
-    <BookmarkBar>즐겨찾기</BookmarkBar>
-    <ul>
-      {bookmarkedVods &&
-        bookmarkedVods.map((vod) => (
-          <li key={vod.id}>
-            <BookmarkBox>
-              <Thumbnail src={vod.thumbnail} alt={vod.title} />
-              <TitleBox>
-                <Title>{vod.title}</Title>
-                <Text>
-                  {vod.date} - {vod.description}
-                </Text>
-                <button onClick={() => toggleBookmark(vod)}>
-                  {bookmarkedVods.some((v) => v.id === vod.id)
-                    ? "즐겨찾기 해제"
-                    : "즐겨찾기 추가"}
-                </button>
-              </TitleBox>
-            </BookmarkBox>
-          </li>
-        ))}
-    </ul>
-  </BookmarkListBox>
-);
+const Bookmark = ({ bookmarks, toggleBookmark }) => {
+  const [bookmarkedVods, setBookmarkedVods] = useState([]);
+
+  return (
+    <BookmarkListBox>
+      <BookmarkBar>즐겨찾기</BookmarkBar>
+      <ul>
+        {bookmarks &&
+          bookmarks.map((bookmark) => (
+            <li key={bookmark.id}>
+              <BookmarkBox>
+                <Thumbnail src={bookmark.thumbnail} alt={bookmark.title} />
+                <TitleBox>
+                  <Title>{bookmark.title}</Title>
+                  <Text>
+                    {bookmark.date} - {bookmark.description}
+                  </Text>
+                  <button onClick={() => toggleBookmark(bookmark.id)}>
+                    {bookmarkedVods.some((v) => v.id === bookmark.id)
+                      ? "즐겨찾기 해제"
+                      : "즐겨찾기 추가"}
+                  </button>
+                </TitleBox>
+              </BookmarkBox>
+            </li>
+          ))}
+      </ul>
+    </BookmarkListBox>
+  );
+};
 
 export default Bookmark;

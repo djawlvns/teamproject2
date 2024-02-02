@@ -50,10 +50,13 @@ const DropdownItem = styled.div`
 export function NavBar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const openDropdown = () => {
+    setIsDropdownOpen(true);
   };
 
+  const closeDropdown = () => {
+    setIsDropdownOpen(false);
+  };
   return (
     <>
       <Menu>
@@ -73,7 +76,7 @@ export function NavBar() {
             <h3>VOD</h3>
           </MenuItem>
         </NavLink>
-        <MenuItem onClick={toggleDropdown}>
+        <MenuItem onMouseEnter={openDropdown} onMouseLeave={closeDropdown}>
           <h3>게시판</h3>
           <DropdownContent isOpen={isDropdownOpen}>
             <NavLink

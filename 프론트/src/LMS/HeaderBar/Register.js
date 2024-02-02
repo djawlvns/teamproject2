@@ -133,17 +133,6 @@ export function Register() {
             </Title>
           </Tcontent>
           <Rcontent>
-            {/* <Aregister>
-              <h1>선생님 회원가입</h1>
-              <Icon
-                icon="la:chalkboard-teacher"
-                color="black"
-                style={{ fontSize: getIconSize() }}
-              />
-              <NavLink to="/join/tregister">
-                <Button>가입하기</Button>
-              </NavLink>
-            </Aregister> */}
             <Bregister>
               <Icon
                 icon="map:school"

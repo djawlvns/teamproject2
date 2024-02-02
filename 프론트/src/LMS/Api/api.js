@@ -8,6 +8,18 @@ export function signUp(user) {
     body: JSON.stringify(user),
   }).then((response) => response.json());
 }
+// 정보 가져오기
+export function user(user) {
+  const token = sessionStorage.getItem("token");
+  return fetch(`http://localhost:8080/api/user`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  }).then((response) => response.json());
+}
 // 아이디 중복확인
 export const checkDuplicateId = async (loginId) => {
   try {
@@ -106,4 +118,65 @@ const getAllVod = async () => {
   }
 };
 
+// 자기 아이디 정보
+export function apiGetMyInfo() {
+  const token = sessionStorage.getItem("token");
+  return fetch("http://localhost:8080/api/user", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(),
+  }).then((response) => response.json());
+}
+
 // 공지사항 불러오기
+export const manageNotice = async (id, noticeData, method) => {
+  try {
+    const token = sessionStorage.getItem("token");
+    const url = id
+      ? `http://localhost:8080/api/notice/${id}`
+      : "http://localhost:8080/api/notice";
+
+    const response = await fetch(url, {
+      method: method,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: method !== "GET" ? JSON.stringify(noticeData) : undefined,
+    });
+
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(`Failed to ${method.toLowerCase()} notice`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error(`Error ${method.toLowerCase()}ing notice:`, error);
+  }
+};
+
+//유저프로필
+export const fetchAllUsers = async () => {
+  try {
+    const token = sessionStorage.getItem("token");
+    const response = await fetch(`http://localhost:8080/api/allUsers`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch all users");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching all users:", error);
+    throw error;
+  }
+};

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { signUp, checkDuplicateId } from "../Api/api";
+import { useNavigate } from "react-router-dom";
 
 const Conteiner = styled.div`
   margin: 0;
@@ -18,6 +19,7 @@ const JoinBody = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 200px;
 `;
 
 const Namebox = styled.div`
@@ -61,19 +63,31 @@ const Genderbox = styled.div`
   }
 `;
 
-const SubmitButton = styled.button``;
+const SubmitButton = styled.button`
+  position: absolute;
+  right: 45%;
+`;
 
 const Idcheck = styled.button``;
+const TextBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+`;
 
 export function Sregister() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     loginId: "",
     password: "",
+    confirmPassword: "",
     birthDate: "",
     gender: "",
     email: "",
+    name: "",
   });
-
+  const [feedback, setFeedback] = useState({ message: "", type: "" });
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
@@ -92,43 +106,50 @@ export function Sregister() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     if (formData.password !== formData.confirmPassword) {
-      console.error("비밀번호가 일치하지 않습니다.");
+      setFeedback({ message: "비밀번호가 일치하지 않습니다.", type: "error" });
       return;
     }
+
     signUp(formData)
       .then((data) => {
-        console.log("회원가입 성공:", data);
+        setFeedback({ message: "회원가입이 완료되었습니다.", type: "success" });
+        navigate("/login");
       })
       .catch((error) => {
-        console.error("회원가입 에러:", error);
+        setFeedback({
+          message: "회원가입에 실패했습니다. 다시 시도해주세요.",
+          type: "error",
+        });
       });
   };
-
   const handleIdCheck = () => {
-    // 아이디 중복 확인을 위한 API 호출
-    // 중복 확인 API 호출하는 함수 작성 후 호출하도록 수정해야 합니다.
     checkDuplicateId(formData.loginId)
       .then((data) => {
-        // 서버로부터 받은 응답을 확인하고 처리
         if (data.errorMessage) {
-          // 서버에서 에러 메시지가 온 경우 처리
-          console.error("아이디 중복 확인 에러:", data.errorMessage);
+          setFeedback({
+            message: "오류가 발생했습니다. 다시 시도해주세요.",
+            type: "error",
+          });
         } else if (data.isDuplicate) {
-          // 중복된 아이디인 경우 처리
-          console.log("이미 사용 중인 아이디입니다.");
+          setFeedback({
+            message: "이미 사용 중인 아이디입니다.",
+            type: "error",
+          });
         } else {
-          // 중복되지 않은 경우 처리
-          console.log("사용 가능한 아이디입니다.");
+          setFeedback({
+            message: "사용 가능한 아이디입니다.",
+            type: "success",
+          });
         }
       })
       .catch((error) => {
-        // 클라이언트 측에서 발생한 에러 처리
-        console.error("아이디 중복 확인 에러:", error.message);
+        setFeedback({
+          message: "아이디 중복 확인 중 오류가 발생했습니다.",
+          type: "error",
+        });
       });
   };
-
   return (
     <>
       <Conteiner>
@@ -210,9 +231,22 @@ export function Sregister() {
               style={{ paddingLeft: "5px" }}
             />
           </Inputbox>
-          <SubmitButton onClick={handleSubmit}>가입하기</SubmitButton>
+
           <Idcheck onClick={handleIdCheck}>중복확인하기</Idcheck>
         </JoinBody>
+        <SubmitButton onClick={handleSubmit}>가입하기</SubmitButton>
+        <TextBox>
+          {feedback.message && (
+            <div
+              style={{
+                color: feedback.type === "error" ? "red" : "green",
+                marginTop: "10px",
+              }}
+            >
+              {feedback.message}
+            </div>
+          )}
+        </TextBox>
       </Conteiner>
     </>
   );

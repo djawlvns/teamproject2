@@ -3,6 +3,8 @@ import { Notice } from "./Notice";
 import { Schedule } from "./Schedule";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { manageNotice } from "./Api/api";
+import ANoticeComponent from "./Admin/ANotice";
 
 const Container = styled.div`
   width: calc(100vw-10px);
@@ -85,22 +87,28 @@ const GoDefineBtn = styled.div`
     color: white;
   }
 `;
+
 export function Home() {
-  const [noticeList, setNoticeList] = useState(""); // 공지사항 내용 상태
+  const [noticeList, setNoticeList] = useState([]); // 공지사항 내용 상태
   const [scheduleText, setScheduleText] = useState(""); // 강의시간표 내용 상태
 
   useEffect(() => {
-    setNoticeList([
-      { title: "시험 공지", content: "1.30-1.31: HTML, CSS 기초 테스트" },
-      {
-        title: "휴무 공지",
-        content: "1.26: 개교 기념일 휴무, 2.8-2.12: 설 연휴",
-      },
-    ]);
-    setScheduleText(
-      "강의 시간표\n월요일: 10:00 AM - 12:00 PM\n수요일: 2:00 PM - 4:00 PM\n금요일: 3:00 PM - 5:00 PM"
-    );
+    const loadNotices = async () => {
+      try {
+        const fetchedNotices = await manageNotice(null, null, "GET");
+        setNoticeList(fetchedNotices || []);
+      } catch (error) {
+        console.error("Error loading notices:", error);
+      }
+    };
+
+    loadNotices();
   }, []);
+  console.log("Get");
+  const handleAddNotice = (notice) => {
+    setNoticeList((prevNotices) => [...prevNotices, notice]);
+  };
+
   return (
     <>
       <Container>

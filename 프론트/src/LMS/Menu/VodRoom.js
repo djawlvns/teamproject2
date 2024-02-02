@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Route, Link, Routes } from "react-router-dom";
 import Bookmark from "../Mypage/Bookmark";
+import { apiGetMyInfo } from "../Api/api";
 
 const Container = styled.div`
   display: flex;
@@ -41,44 +42,8 @@ const Title = styled.div``;
 const Text = styled.div``;
 
 export function VodRoom() {
-  const [bookmarkedVods, setBookmarkedVods] = useState([]);
   const [vods, setVods] = useState([]);
-
-  const toggleBookmark = async (vod) => {
-    const token = sessionStorage.getItem("token");
-    try {
-      const isBookmarked = bookmarkedVods.some((v) => v.id === vod.id);
-
-      if (isBookmarked) {
-        // 북마크에서 제거
-        const updatedBookmarks = bookmarkedVods.filter((v) => v.id !== vod.id);
-        console.log(updatedBookmarks);
-        setBookmarkedVods(updatedBookmarks);
-      } else {
-        // 북마크에 추가
-        setBookmarkedVods([...bookmarkedVods, vod]);
-      }
-
-      // 서버에 북마크 정보 업데이트
-      const response = await fetch("http://localhost:8080/api/bookmark", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ vodId: vod.id }),
-      });
-      console.log(isBookmarked);
-      // 성공적으로 서버에 업데이트되면, 서버에서 다시 북마크 목록을 가져옴
-      const updatedBookmarksResponse = await fetch(
-        "http://localhost:8080/api/bookmark"
-      );
-      const updatedBookmarks = await updatedBookmarksResponse.json();
-      setBookmarkedVods(updatedBookmarks);
-    } catch (error) {
-      console.error("Error updating bookmark:", error);
-    }
-  };
+  const [bookmarkedVods, setBookmarkedVods] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,10 +59,43 @@ export function VodRoom() {
         console.error("Error fetching VOD data:", error);
       }
     };
-
     // 데이터 로딩
     fetchData();
   }, []);
+  // console.log(vods);
+  const handleBookmarkClick = async (vod) => {
+    try {
+      const token = sessionStorage.getItem("token");
+      const user = await apiGetMyInfo();
+
+      const newBookmark = {
+        thumbnail: vod.thumbnail,
+        title: vod.title,
+        date: vod.date,
+        description: vod.description,
+        url: vod.url,
+        vodId: vod.id,
+        userId: user.data.id,
+      };
+
+      const response = await fetch("http://localhost:8080/api/bookmark", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newBookmark),
+      });
+      console.log(response);
+      if (response.ok) {
+        setBookmarkedVods((prevBookmarks) => [...prevBookmarks, vods.id]);
+      } else {
+        console.error("Error bookmarking VOD:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error bookmarking VOD:", error);
+    }
+  };
 
   return (
     <>
@@ -113,29 +111,15 @@ export function VodRoom() {
                   <Title>{vod.title}</Title>
                   <Text>{vod.date}</Text>
                 </TextBox>
-                <button
-                  id={`bookmark-button-${vod.id}`}
-                  onClick={() => toggleBookmark(vod)}
-                  disabled={bookmarkedVods.some((v) => v.id === vod.id)}
-                >
-                  {bookmarkedVods.some((v) => v.id === vod.id)
-                    ? "즐겨찾기 제거"
-                    : "즐겨찾기 추가"}
+                <button onClick={() => handleBookmarkClick(vod)}>
+                  즐겨찾기
                 </button>
               </VodBox>
             ))}
         </VodListContainer>
       </Container>
       <Routes>
-        <Route
-          path="/main/bookmark"
-          element={
-            <Bookmark
-              bookmarkedVods={bookmarkedVods}
-              toggleBookmark={toggleBookmark}
-            />
-          }
-        />
+        <Route path="/main/bookmark" element={<Bookmark />} />
       </Routes>
     </>
   );

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const NoticeContainer = styled.div``;
 
@@ -13,13 +14,25 @@ const StyledDiv = styled.div`
 const NoticeTextBox = styled.div`
   font-size: 2rem;
 `;
+const StyledNavLink = styled(NavLink)`
+  color: black;
+  text-decoration: none;
+  &:hover {
+    color: black;
+  }
+  &.active {
+    color: black;
+  }
+`;
 export function Notice({ noticeList }) {
   return (
     <>
       <NoticeContainer>
-        <StyledDiv>
-          <h2>공지사항</h2>
-        </StyledDiv>
+        <StyledNavLink to="/main/Noticeboard">
+          <StyledDiv>
+            <h2>공지사항</h2>
+          </StyledDiv>
+        </StyledNavLink>
         <NoticeTextBox>
           {Array.isArray(noticeList) && noticeList.length > 0 ? (
             noticeList.map((notice, index) => (

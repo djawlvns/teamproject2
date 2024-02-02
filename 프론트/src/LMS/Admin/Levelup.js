@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { fetchAllUsers } from "../Api/api";
 
 const ProfileContainer = styled.div`
   padding: 50px 200px 0px 200px;
@@ -29,21 +30,47 @@ const UserName = styled.div`
   border-bottom: 1px solid gray;
   padding-left: 10px;
 `;
-const GoProfileBtn = styled.div``;
-const LevelupComponent = () => (
-  <ProfileContainer>
-    <Profile>
-      <ProfileBar>유저 프로필</ProfileBar>
-      <UserName>
-        김대우
-        <GoProfileBtn>
-          <NavLink to="/main/Profile">
-            <button>더보기→</button>
-          </NavLink>
-        </GoProfileBtn>
-      </UserName>
-    </Profile>
-  </ProfileContainer>
-);
+
+const GoProfileBtn = styled.div`
+  position: absolute;
+  right: 20%;
+  button {
+    border: none;
+    background-color: white;
+  }
+`;
+
+const LevelupComponent = () => {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    //전체 유저 데이터 불러오기
+    fetchAllUsers()
+      .then((data) => {
+        setUsers(data.data); // 응답 데이터로 상태 설정
+      })
+      .catch((error) => {
+        console.error("Error fetching users:", error);
+      });
+  }, []);
+
+  return (
+    <ProfileContainer>
+      {users.map((user) => (
+        <Profile key={user.id}>
+          <ProfileBar>유저 프로필</ProfileBar>
+          <UserName>
+            {user.name}
+            <GoProfileBtn>
+              <NavLink to={`/main/Profile/${user.id}`}>
+                <button>더보기→</button>
+              </NavLink>
+            </GoProfileBtn>
+          </UserName>
+        </Profile>
+      ))}
+    </ProfileContainer>
+  );
+};
 
 export default LevelupComponent;
