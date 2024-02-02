@@ -1,16 +1,13 @@
 package com.tp.dws.service.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.tp.dws.dto.BaseResponse;
 import com.tp.dws.dto.BookMarkDto;
-import com.tp.dws.dto.VodDto;
 import com.tp.dws.enumstatus.ResultCode;
 import com.tp.dws.exception.InvalidRequestException;
 import com.tp.dws.model.BookMark;
@@ -45,7 +42,7 @@ public class BookMarkServiceImpl implements BookMarkService {
 		Optional<BookMark> existingBookmark = bookmarkRepository.findByVodIdAndUserId(vodId, userId);
 
 	    if (existingBookmark.isPresent()) {
-	        // If a bookmark already exists, delete it
+	        // 이미 있을시 userId 와 vodId 비교해서 해제
 	        bookmarkRepository.delete(existingBookmark.get());
 	        return new BaseResponse<>(
 	        		ResultCode.SUCCESS.name(),
@@ -79,10 +76,13 @@ public class BookMarkServiceImpl implements BookMarkService {
 
 
 	public BaseResponse<List<BookMark>> getAllBookMark(){
+		
 		List<BookMark> bookmarks = bookmarkRepository.findAll();
+		
 		if(bookmarks.isEmpty()) {
 			throw new InvalidRequestException("BookMarks empty", "북마크가 등록되어 있지 않습니다.");
 		}
+		
 		return new BaseResponse<>(
 				ResultCode.SUCCESS.name(),
 				bookmarks,

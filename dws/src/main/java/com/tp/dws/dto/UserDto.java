@@ -12,6 +12,8 @@ import jakarta.validation.constraints.Pattern;
 
 public class UserDto {
 	
+	private Long id;
+	
 	@NotBlank
 	private String loginId;
 	@NotBlank
@@ -39,13 +41,16 @@ public class UserDto {
 	}
 
 
-	public UserDto(@NotBlank String loginId,
+	public UserDto(
+			Long id,
+			@NotBlank String loginId,
 			@NotBlank @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&*!])[A-Za-z\\d@#$%^&*!]{8,20}$", message = "영문 숫자 특수문자를 포함한 8~20자리로 입력해주세요.") String password,
 			@NotBlank String name,
 			@NotBlank @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$", message = "날짜형식 (YYYY-MM-DD)을 확인해주세요.") String birthDate,
 			@NotBlank @Pattern(regexp = "^(MAN|WOMAN)$", message = "MAN이나 WOMAN즁 하나를 선택해주세요") String gender,
 			@NotBlank @Email String email, Set<RoleDto> roleDtoSet) {
 		super();
+		this.id = id;
 		this.loginId = loginId;
 		this.password = password;
 		this.name = name;
@@ -54,8 +59,19 @@ public class UserDto {
 		this.email = email;
 		this.roleDtoSet = roleDtoSet;
 	}
+	
 
 	
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
 	public String getLoginId() {
 		return loginId;
 	}
@@ -132,8 +148,9 @@ public class UserDto {
 		Set<RoleDto> roleDtoSet = user.getrRoles().stream()
 				.map(role -> new RoleDto(role.getRoleName()))
 				.collect(Collectors.toSet());
+		Long userId = user.getId();
 		
-		return new UserDto(user.getLoginId(), null, user.getName(), null,null,user.getEmail(), roleDtoSet);
+		return new UserDto(userId, user.getLoginId(), null, user.getName(), null,null,user.getEmail(), roleDtoSet);
 	}
 
 }
