@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.tp.dws.dto.BaseResponse;
@@ -13,7 +15,6 @@ import com.tp.dws.dto.NoticeDto;
 import com.tp.dws.enumstatus.ResultCode;
 import com.tp.dws.exception.InvalidRequestException;
 import com.tp.dws.model.Notice;
-import com.tp.dws.model.User;
 import com.tp.dws.repository.NoticeRepository;
 import com.tp.dws.repository.UserRepository;
 
@@ -35,8 +36,13 @@ public class NoticeServiceImpl {
 
 //	공지사항 만들기
 	public BaseResponse<Void> createNotice(NoticeDto noticeDto) {
-		User user = userRepository.findByLoginId(noticeDto.getAuthor());
-		if( user == null ) {
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		
+		boolean isAdmin = authentication.getAuthorities().stream()
+				.anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"));
+		
+		if(!isAdmin ) {
 			throw new InvalidRequestException("Invalid author", "권한이 없습니다");
 		}
 		Notice notice = new Notice();
