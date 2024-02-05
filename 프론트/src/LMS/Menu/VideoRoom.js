@@ -15,7 +15,8 @@ const ClassContent = styled.div`
 
 const ClassBoard = styled.div`
   position: relative;
-  width: 1500px;
+  width: 80%; /* 변경 가능: 화면 가로 크기에 따라 조절하세요 */
+  margin: auto; /* 가운데 정렬을 위한 마진 설정 */
   height: 800px;
   display: flex;
   flex-direction: column;

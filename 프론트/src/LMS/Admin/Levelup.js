@@ -44,7 +44,6 @@ const LevelupComponent = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    //전체 유저 데이터 불러오기
     fetchAllUsers()
       .then((data) => {
         setUsers(data.data); // 응답 데이터로 상태 설정
@@ -56,9 +55,9 @@ const LevelupComponent = () => {
 
   return (
     <ProfileContainer>
+      <ProfileBar>유저 프로필</ProfileBar>
       {users.map((user) => (
         <Profile key={user.id}>
-          <ProfileBar>유저 프로필</ProfileBar>
           <UserName>
             {user.name}
             <GoProfileBtn>

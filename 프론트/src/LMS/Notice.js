@@ -39,7 +39,7 @@ export function Notice({ noticeList }) {
               <p key={index}>{`${notice.title} - ${notice.content}`}</p>
             ))
           ) : (
-            <p>No notices available.</p>
+            <p></p>
           )}
         </NoticeTextBox>
       </NoticeContainer>

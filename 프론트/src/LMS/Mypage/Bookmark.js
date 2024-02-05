@@ -50,7 +50,7 @@ const Text = styled.div``;
 
 const Bookmark = ({ bookmarks, toggleBookmark }) => {
   const [bookmarkedVods, setBookmarkedVods] = useState([]);
-
+  console.log(bookmarkedVods);
   return (
     <BookmarkListBox>
       <BookmarkBar>즐겨찾기</BookmarkBar>

@@ -28,41 +28,41 @@ const Class = styled.div`
   display: flex;
   align-items: center;
   border-bottom: 1px solid gray;
-  padding-left: 10px;
 `;
 const Name = styled.div`
   height: 40px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid gray;
-  padding-left: 10px;
 `;
 const Gender = styled.div`
   height: 40px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid gray;
-  padding-left: 10px;
 `;
 const ID = styled.div`
   height: 40px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid gray;
-  padding-left: 10px;
 `;
 const Email = styled.div`
   height: 40px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid gray;
-  padding-left: 10px;
 `;
-const PhoneNum = styled.div`
-  height: 40px;
+
+const Title = styled.div`
   display: flex;
+  color: white;
+  background-color: gray;
+  justify-content: center;
   align-items: center;
-  padding-left: 10px;
+  margin-right: 10px;
+  height: 100%;
+  width: 100px;
 `;
 
 const MyInfoComponent = () => {
@@ -73,7 +73,6 @@ const MyInfoComponent = () => {
       try {
         const data = await user();
         setLoginInfo(data);
-        console.log(data.data);
       } catch (error) {
         console.log("Error", error);
       }
@@ -86,11 +85,22 @@ const MyInfoComponent = () => {
       <ProfileContainer>
         <Profile>
           <ProfileBar>내 프로필</ProfileBar>
-          <Name>{loginInfo ? loginInfo.data.name : ""}</Name>
-          <Gender>{loginInfo ? loginInfo.data.Gender : ""}</Gender>
-          <ID>DW001145</ID>
-          <Email>dw123@naver.com</Email>
-          <PhoneNum>010-1234-5678</PhoneNum>
+          <Name>
+            <Title>이름</Title>
+            {loginInfo ? loginInfo.data.name : ""}
+          </Name>
+          <Gender>
+            <Title>성별</Title>
+            {loginInfo ? loginInfo.data.gender : ""}
+          </Gender>
+          <ID>
+            <Title>아이디</Title>
+            {loginInfo ? loginInfo.data.loginId : ""}
+          </ID>
+          <Email>
+            <Title>이메일</Title>
+            {loginInfo ? loginInfo.data.email : ""}
+          </Email>
         </Profile>
       </ProfileContainer>
     </>

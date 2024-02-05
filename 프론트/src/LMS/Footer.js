@@ -215,9 +215,9 @@ export function Footer() {
             <TelInfo>
               <Tel1>1544-2083</Tel1>
               <Tel2>
-                09: - 18:00(I토, 일, 공휴일 휴무)
+                09:00 - 18:00(토, 일, 공휴일 휴무)
                 <br />
-                LUNCH 12:00 - 13:00
+                LUNCH 11:50 - 13:00
               </Tel2>
             </TelInfo>
             <SNS>

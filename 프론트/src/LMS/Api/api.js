@@ -158,6 +158,34 @@ export const manageNotice = async (id, noticeData, method) => {
   }
 };
 
+// 시간표 불러오기
+export const manageSchedule = async (id, ScheduleData, method) => {
+  try {
+    const token = sessionStorage.getItem("token");
+    const url = id
+      ? `http://localhost:8080/api/Schedule/${id}`
+      : "http://localhost:8080/api/Schedule";
+
+    const response = await fetch(url, {
+      method: method,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: method !== "GET" ? JSON.stringify(ScheduleData) : undefined,
+    });
+
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(`Failed to ${method.toLowerCase()} Schedule`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error(`Error ${method.toLowerCase()}ing Schedule:`, error);
+  }
+};
+
 //유저프로필
 export const fetchAllUsers = async () => {
   try {

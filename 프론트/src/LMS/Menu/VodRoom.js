@@ -26,7 +26,9 @@ const VodBox = styled.div`
 const Vod = styled.div`
   width: 300px;
   height: 200px;
-  background-color: gray;
+  background-image: url(${(props) => props.thumbnail});
+  background-size: cover;
+  background-position: center;
 `;
 const TextBox = styled.div`
   width: 700px;
@@ -105,7 +107,7 @@ export function VodRoom() {
             vods.map((vod) => (
               <VodBox key={vod.id}>
                 <Link to={`/main/videoroom/${vod.id}`}>
-                  <Vod>VOD</Vod>
+                  <Vod thumbnail={vod.thumbnail}>VOD</Vod>
                 </Link>
                 <TextBox>
                   <Title>{vod.title}</Title>

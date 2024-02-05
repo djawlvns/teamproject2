@@ -1,20 +1,35 @@
 import styled from "styled-components";
+import React from "react";
 
+const ScheduleContainer = styled.div``;
 const StyledDiv = styled.div`
   width: 100%;
   height: 50px;
-  background-color: #e9ecef;
+  background-color: #f1f3f5;
   display: flex;
   align-items: center;
 `;
+const ScheduleTextBox = styled.div`
+  font-size: 2rem;
+`;
 
-export function Schedule() {
+export function Schedule({ ScheduleList }) {
   return (
     <>
-      <StyledDiv>
-        <h2>강의 시간표</h2>
-        {/* <p>{scheduleText}</p> */}
-      </StyledDiv>
+      <ScheduleContainer>
+        <StyledDiv>
+          <h2>시간표</h2>
+        </StyledDiv>
+        <ScheduleTextBox>
+          {Array.isArray(ScheduleList) && ScheduleList.length > 0 ? (
+            ScheduleList.map((Schedule, index) => (
+              <p key={index}>{`${Schedule.time} - ${Schedule.subject}`}</p>
+            ))
+          ) : (
+            <p></p>
+          )}
+        </ScheduleTextBox>
+      </ScheduleContainer>
     </>
   );
 }

@@ -100,13 +100,21 @@ export function Home() {
       } catch (error) {
         console.error("Error loading notices:", error);
       }
+      console.log("Notice List after loading:", noticeList);
     };
 
     loadNotices();
   }, []);
   console.log("Get");
-  const handleAddNotice = (notice) => {
-    setNoticeList((prevNotices) => [...prevNotices, notice]);
+
+  const handleAddNotice = async (notice) => {
+    try {
+      const response = await manageNotice(null, notice, "POST");
+      console.log(response);
+      setNoticeList((prevNotices) => [...prevNotices, response]);
+    } catch (error) {
+      console.error("Error adding notice:", error);
+    }
   };
 
   return (
