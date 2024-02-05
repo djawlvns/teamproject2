@@ -17,6 +17,7 @@ import com.tp.dws.exception.InvalidRequestException;
 import com.tp.dws.model.Notice;
 import com.tp.dws.repository.NoticeRepository;
 import com.tp.dws.repository.UserRepository;
+import com.tp.dws.service.CustomUserDetailsService;
 
 import jakarta.transaction.Transactional;
 
@@ -36,26 +37,20 @@ public class NoticeServiceImpl {
 
 //	공지사항 만들기
 	public BaseResponse<Void> createNotice(NoticeDto noticeDto) {
-		
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		
-		boolean isAdmin = authentication.getAuthorities().stream()
-				.anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"));
-		
-		if(!isAdmin ) {
-			throw new InvalidRequestException("Invalid author", "권한이 없습니다");
-		}
-		Notice notice = new Notice();
-		notice.setCreateAt(LocalDate.now());
-		notice.setAuthor(noticeDto.getAuthor());
-		notice.setTitle(noticeDto.getTitle());
-		notice.setContent(noticeDto.getContent());
-		
-		noticeRepository.save(notice);
-		return new BaseResponse<>(
-				ResultCode.SUCCESS.name(),
-				null,
-				"게시글 생성이 완료되었습니다.");
+
+
+	    Notice notice = new Notice();
+	    notice.setCreateAt(LocalDate.now());
+	    notice.setAuthor(noticeDto.getAuthor());
+	    notice.setTitle(noticeDto.getTitle());
+	    notice.setContent(noticeDto.getContent());
+
+	    noticeRepository.save(notice);
+
+	    return new BaseResponse<>(
+	            ResultCode.SUCCESS.name(),
+	            null,
+	            "게시글 생성이 완료되었습니다.");
 	}
 //	공지사항 불러오기
 	public BaseResponse<List<Notice>> getAllNotice(){

@@ -1,7 +1,5 @@
 package com.tp.dws.dto;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -147,7 +145,7 @@ public class UserDto {
 	public static UserDto from(User user) {
 		if(user == null) return null;
 		
-		Set<RoleDto> roleDtoSet = user.getrRoles().stream()
+		Set<RoleDto> roleDtoSet = user.getRoles().stream()
 				.map(role -> new RoleDto(role.getRoleName()))
 				.collect(Collectors.toSet());
 		Long userId = user.getId();

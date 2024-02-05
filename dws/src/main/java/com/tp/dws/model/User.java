@@ -165,7 +165,7 @@ public class User {
 		this.activated = activated;
 	}
 
-	public Set<Role> getrRoles() {
+	public Set<Role> getRoles() {
 		return role;
 	}
 

@@ -8,9 +8,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tp.dws.model.Notice;
 import com.tp.dws.model.User;
 import com.tp.dws.repository.UserRepository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
          throw new RuntimeException(username + " -> 활성화되어 있지 않습니다.");
       }
 
-      List<GrantedAuthority> grantedAuthorities = user.getrRoles().stream()
+      List<GrantedAuthority> grantedAuthorities = user.getRoles().stream()
               .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
               .collect(Collectors.toList());
 
@@ -45,4 +47,11 @@ public class CustomUserDetailsService implements UserDetailsService {
               user.getPassword(),
               grantedAuthorities);
    }
+
+public Collection<Notice> getAuthorities() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+
 }
