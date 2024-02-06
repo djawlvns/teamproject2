@@ -88,6 +88,7 @@ function RenderLiveSchedule() {
         key={`period${i}time${j}`}
         period={`${i}교시`}
         time={`(${formatTime(j)}:00 ~ ${formatTime(j)}:50)`}
+        vodId={i}
       />
     );
   }

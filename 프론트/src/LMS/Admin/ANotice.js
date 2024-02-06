@@ -67,7 +67,7 @@ const ANoticeComponent = ({ onAddNotice }) => {
           title: title,
           content: content,
         };
-
+        console.log(noticeData);
         const response = await fetch("http://localhost:8080/api/notice", {
           method: "POST",
           headers: {

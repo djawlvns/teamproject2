@@ -56,7 +56,9 @@ export function LiveSchedule(props) {
         {/* 여기에 DB에서 불러온 강의이름이 들어가야함 */}
         <ClassNameBox>강의명</ClassNameBox>
         <StartClassBox>
-          <NavLink to="/main/classroom/live">강의 듣기</NavLink>
+          <NavLink to={`/main/classroom/live/${props.vodId}`}>
+            강의 듣기
+          </NavLink>
         </StartClassBox>
       </Container>
     </>

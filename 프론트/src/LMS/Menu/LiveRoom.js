@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import { Player } from "../Module/Player";
+import { useParams } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
@@ -32,6 +33,7 @@ const ClassBoardTxt = styled.div`
 
 export function LiveRoom() {
   const [playing, setPlaying] = useState(true);
+  const { id } = useParams();
   const playerRef = useRef(null);
 
   //played,duration,onSeek 값 설정
@@ -59,6 +61,7 @@ export function LiveRoom() {
               setPlaying={setPlaying}
               onDuration={(value) => setDuration(value)}
               onProgress={({ played }) => setPlayed(played)}
+              vodId={id}
             />
           </ClassBoard>
         </ClassContent>

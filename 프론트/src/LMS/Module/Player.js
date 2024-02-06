@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import ReactPlayer from "react-player";
 import styled from "styled-components";
 import ProgressBar from "./ProgressBar";
@@ -29,22 +29,37 @@ const PlayerCoverbox = styled.div`
   left: 0;
 `;
 
-export function Player({ playing, setPlaying }) {
+export function Player({ playing, setPlaying, vodId }) {
+  console.log("vod id", vodId);
   //상위 컴포넌트에 playing,setPlayin true로 정의
   const playerRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [played, setPlayed] = useState(0);
   const [liveCheck, setliveCheck] = useState(true);
   const [duration, setDuration] = useState(0); //총 재생시간
-  const [curr, setCurr] = useState(
-    "https://youtu.be/dh4hdtZ00EU?si=qbQcbmhsOLRHdKJC"
-  );
+  const [curr, setCurr] = useState("");
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/vod");
+        if (!response.ok) throw new Error("Error");
+        const data = await response.json();
+        if (data.data && data.data.length > 0) {
+          setCurr(data.data[0].url);
+        }
+      } catch (error) {
+        console.error("Error fetching videos: ", error);
+      }
+    };
+
+    fetchVideos();
+  }, []);
 
   const onEnded = () => {
-    setCurr("https://youtu.be/V7TXlm7kpaE?si=Te8a2rBGNmj3Hg_4");
+    setCurr("");
     setPlaying(true);
   };
-
   const onSeek = (value) => {
     if (playerRef.current) {
       setPlayed(value);
@@ -55,7 +70,7 @@ export function Player({ playing, setPlaying }) {
       console.log("이거 호출 되니?");
     }
   };
-
+  console.log(curr);
   return (
     <>
       <Container>

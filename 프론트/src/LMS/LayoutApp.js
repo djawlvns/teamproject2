@@ -54,9 +54,9 @@ export function LayoutApp() {
                 <Route path="home" element={<Home />} />
                 <Route path="logout" element={<Logout />} />
                 <Route path="classroom" element={<ClassRoom />} />
-                <Route path="classroom/live" element={<LiveRoom />} />
+                <Route path="classroom/live/:id" element={<LiveRoom />} />
                 <Route path="vodroom" element={<VodRoom />} />
-                <Route path="videoroom/:videoId" element={<VideoRoom />} />
+                <Route path="videoroom" element={<VideoRoom />} />
                 <Route path="define" element={<Define />} />
                 <Route path="board" element={<Board />}>
                   <Route path="free" element={<Free />} />

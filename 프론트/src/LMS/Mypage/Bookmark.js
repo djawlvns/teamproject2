@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
+import { fetchBookmarkedLectures } from "../Api/api";
 
 const BookmarkBar = styled.div`
   width: 100%;
@@ -48,32 +49,47 @@ const Title = styled.div``;
 
 const Text = styled.div``;
 
-const Bookmark = ({ bookmarks, toggleBookmark }) => {
-  const [bookmarkedVods, setBookmarkedVods] = useState([]);
-  console.log(bookmarkedVods);
+const Bookmark = ({ toggleBookmark }) => {
+  const [bookmarks, setBookmarks] = useState([]);
+
+  useEffect(() => {
+    const fetchBookmarks = async () => {
+      try {
+        const response = await fetchBookmarkedLectures();
+        if (response.resultCode === "SUCCESS") {
+          setBookmarks(response.data);
+        } else {
+          console.error("error", response.message);
+        }
+      } catch (error) {
+        console.error("Error fetching bookmarked lectures:", error);
+      }
+    };
+    fetchBookmarks();
+  }, []);
+  console.log(bookmarks.data);
   return (
     <BookmarkListBox>
       <BookmarkBar>즐겨찾기</BookmarkBar>
       <ul>
-        {bookmarks &&
-          bookmarks.map((bookmark) => (
-            <li key={bookmark.id}>
-              <BookmarkBox>
-                <Thumbnail src={bookmark.thumbnail} alt={bookmark.title} />
-                <TitleBox>
-                  <Title>{bookmark.title}</Title>
-                  <Text>
-                    {bookmark.date} - {bookmark.description}
-                  </Text>
-                  <button onClick={() => toggleBookmark(bookmark.id)}>
-                    {bookmarkedVods.some((v) => v.id === bookmark.id)
-                      ? "즐겨찾기 해제"
-                      : "즐겨찾기 추가"}
-                  </button>
-                </TitleBox>
-              </BookmarkBox>
-            </li>
-          ))}
+        {bookmarks.map((bookmark) => (
+          <li key={bookmark.id}>
+            <BookmarkBox>
+              <Thumbnail src={bookmark.thumbnail} alt={bookmark.title} />
+              <TitleBox>
+                <Title>{bookmark.title}</Title>
+                <Text>
+                  {bookmark.date} - {bookmark.description}
+                </Text>
+                <button onClick={() => toggleBookmark(bookmark.id)}>
+                  {bookmark.some((v) => v.id === bookmark.id)
+                    ? "즐겨찾기 해제"
+                    : "즐겨찾기 추가"}
+                </button>
+              </TitleBox>
+            </BookmarkBox>
+          </li>
+        ))}
       </ul>
     </BookmarkListBox>
   );

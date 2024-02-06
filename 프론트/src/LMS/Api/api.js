@@ -72,9 +72,11 @@ export const checkDuplicateId = async (loginId) => {
 //북마크
 export const fetchBookmarkedLectures = async () => {
   try {
+    const token = sessionStorage.getItem("token");
     const response = await fetch(`http://localhost:8080/api/bookmark`, {
       method: "GET",
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });

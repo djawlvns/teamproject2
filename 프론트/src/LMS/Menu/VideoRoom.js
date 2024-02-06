@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import VideoPlayer from "../Module/VideoPlayer";
 
 const Container = styled.div`
@@ -33,8 +33,8 @@ const ClassBoardTxt = styled.div`
 `;
 
 const VideoRoom = () => {
-  const { videoId } = useParams();
-  const videoURL = `http://localhost:8080/api/vod/${videoId}`;
+  const location = useLocation();
+  const videoURL = new URLSearchParams(location.search).get("url");
 
   // const videoURL = getVideoURLById(videoId);
 

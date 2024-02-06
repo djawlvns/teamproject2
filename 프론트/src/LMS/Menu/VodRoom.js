@@ -106,8 +106,8 @@ export function VodRoom() {
           {vods.length > 0 &&
             vods.map((vod) => (
               <VodBox key={vod.id}>
-                <Link to={`/main/videoroom/${vod.id}`}>
-                  <Vod thumbnail={vod.thumbnail}>VOD</Vod>
+                <Link to={`/main/videoroom?url=${vod.url}`}>
+                  <Vod thumbnail={vod.thumbnail} />
                 </Link>
                 <TextBox>
                   <Title>{vod.title}</Title>
