@@ -61,29 +61,27 @@ const ANoticeComponent = ({ onAddNotice }) => {
       const isAdmin = user.data.roleDtoSet.some(
         (role) => role.roleName === "ROLE_ADMIN"
       );
-      console.log(isAdmin);
-
       if (isAdmin) {
         const noticeData = {
           author: user.data.loginId,
-          title,
-          content,
+          title: title,
+          content: content,
         };
+
+        const response = await fetch("http://localhost:8080/api/notice", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(noticeData),
+        });
+        if (onAddNotice) {
+          onAddNotice({ title, content });
+        }
+        setTitle("");
+        setContent("");
       }
-      const response = await fetch("http://localhost:8080/api/notice", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(),
-      });
-      console.log(response);
-      if (onAddNotice) {
-        onAddNotice({ title, content });
-      }
-      setTitle("");
-      setContent("");
     } catch (error) {
       console.error("Error posting notice:", error);
     }

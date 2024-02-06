@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import React, { useState } from "react";
 import MyInfoComponent from "./Me";
-import ClassCheckComponent from "./ClassCheck";
 import BookmarkComponent from "./Bookmark";
 
 const Container = styled.div`
@@ -36,8 +35,6 @@ export function Mypage() {
     switch (selectedMenu) {
       case "MyInfo":
         return <MyInfoComponent />;
-      case "ClassCheck":
-        return <ClassCheckComponent />;
       case "Bookmark":
         return <BookmarkComponent />;
       default:
@@ -49,9 +46,6 @@ export function Mypage() {
       <Container>
         <MypageMenu>
           <MenuItem onClick={() => setSelectedMenu("MyInfo")}>내정보</MenuItem>
-          <MenuItem onClick={() => setSelectedMenu("ClassCheck")}>
-            출결관리
-          </MenuItem>
           <MenuItem onClick={() => setSelectedMenu("Bookmark")}>
             즐겨찾기
           </MenuItem>

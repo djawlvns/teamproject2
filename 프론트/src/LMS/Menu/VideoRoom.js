@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import VideoPlayer from "../Module/VideoPlayer";
 
 const Container = styled.div`
@@ -15,8 +15,8 @@ const ClassContent = styled.div`
 
 const ClassBoard = styled.div`
   position: relative;
-  width: 80%; /* 변경 가능: 화면 가로 크기에 따라 조절하세요 */
-  margin: auto; /* 가운데 정렬을 위한 마진 설정 */
+  width: 80%;
+  margin: auto;
   height: 800px;
   display: flex;
   flex-direction: column;
@@ -34,21 +34,21 @@ const ClassBoardTxt = styled.div`
 
 const VideoRoom = () => {
   const { videoId } = useParams();
+  const videoURL = `http://localhost:8080/api/vod/${videoId}`;
 
-  //DB에 저장
-  const getVideoURLById = (videoId) => {
-    switch (videoId) {
-      case "1":
-        return "blob:https://www.youtube.com/d91e56aa-555d-480e-9042-81e792a6e3f5";
-      case "2":
-        return "https://www.youtube.com/your_video_url_2";
-      // 추가적인 동영상에 대한 case문 추가
-      default:
-        return "https://www.youtube.com/default_video_url";
-    }
-  };
+  // const videoURL = getVideoURLById(videoId);
 
-  const videoURL = getVideoURLById(videoId);
+  // //DB에 저장
+  // const getVideoURLById = (videoId) => {
+  //   switch (videoId) {
+  //     case "1":
+  //       return "https://youtu.be/dh4hdtZ00EU?si=qbQcbmhsOLRHdKJC";
+  //     case "2":
+  //       return "https://youtu.be/V7TXlm7kpaE?si=Te8a2rBGNmj3Hg_4";
+  //     default:
+  //       return "https://youtu.be/dh4hdtZ00EU?si=qbQcbmhsOLRHdKJC";
+  //   }
+  // };
 
   return (
     <Container>
@@ -56,7 +56,6 @@ const VideoRoom = () => {
         <ClassBoard>
           <ClassBoardTxt>수업 동영상</ClassBoardTxt>
           <VideoPlayer videoURL={videoURL} />
-          <p>비디오 ID: {videoId}</p>
         </ClassBoard>
       </ClassContent>
     </Container>
