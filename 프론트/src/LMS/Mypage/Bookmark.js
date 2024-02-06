@@ -37,7 +37,7 @@ const BookmarkBox = styled.div`
 
 const Thumbnail = styled.img`
   width: 300px;
-  height: 200px;
+  height: 50px;
 `;
 
 const TitleBox = styled.div`
@@ -47,7 +47,9 @@ const TitleBox = styled.div`
 
 const Title = styled.div``;
 
-const Text = styled.div``;
+const Text = styled.div`
+  background-color: white;
+`;
 
 const Bookmark = ({ toggleBookmark }) => {
   const [bookmarks, setBookmarks] = useState([]);
@@ -67,7 +69,7 @@ const Bookmark = ({ toggleBookmark }) => {
     };
     fetchBookmarks();
   }, []);
-  console.log(bookmarks.data);
+  console.log(bookmarks.map((bookmark) => bookmark.id));
   return (
     <BookmarkListBox>
       <BookmarkBar>즐겨찾기</BookmarkBar>
@@ -81,11 +83,7 @@ const Bookmark = ({ toggleBookmark }) => {
                 <Text>
                   {bookmark.date} - {bookmark.description}
                 </Text>
-                <button onClick={() => toggleBookmark(bookmark.id)}>
-                  {bookmark.some((v) => v.id === bookmark.id)
-                    ? "즐겨찾기 해제"
-                    : "즐겨찾기 추가"}
-                </button>
+                <button onClick={() => toggleBookmark(bookmark.id)}></button>
               </TitleBox>
             </BookmarkBox>
           </li>
