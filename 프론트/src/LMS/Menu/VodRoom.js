@@ -48,6 +48,7 @@ const Text = styled.div``;
 export function VodRoom() {
   const [vods, setVods] = useState([]);
   const [bookmarkedVods, setBookmarkedVods] = useState([]);
+  const [clickCnt, setClickCnt] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,17 +64,39 @@ export function VodRoom() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    getAllBookmarks();
+  }, [clickCnt]);
+
+  async function getAllBookmarks() {
+    const token = sessionStorage.getItem("token");
+    const response = await fetch(`http://localhost:8080/api/bookmark`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((response) => response.json());
+
+    console.log(response);
+    if (response.resultCode === "SUCCESS") {
+      setBookmarkedVods(response.data);
+    } else {
+    }
+  }
+
   const toggleBookmark = async (vodId) => {
     try {
       const token = sessionStorage.getItem("token");
       const user = await apiGetMyInfo();
 
-      const existingBookmark = bookmarkedVods.find(
-        (bookmark) => bookmark.vodId === vodId
+      console.log(bookmarkedVods, vodId);
+      const isBookmarked = bookmarkedVods.find(
+        (bookmark) => bookmark.vod.id === vodId
       );
-      if (existingBookmark) {
+      if (isBookmarked) {
         await fetch(
-          `http://localhost:8080/api/bookmark/${existingBookmark.id}`,
+          `http://localhost:8080/api/bookmark/delete/${isBookmarked.id}`,
           {
             method: "DELETE",
             headers: {
@@ -81,8 +104,9 @@ export function VodRoom() {
             },
           }
         );
-        setBookmarkedVods((prevBookmarks) =>
-          prevBookmarks.filter((bookmark) => bookmark.vodId !== vodId)
+
+        setBookmarkedVods(
+          bookmarkedVods.filter((bookmark) => bookmark.vod.id !== vodId)
         );
       } else {
         const vodToAdd = vods.find((vod) => vod.id === vodId);
@@ -105,7 +129,6 @@ export function VodRoom() {
           body: JSON.stringify(newBookmark),
         });
         if (response.ok) {
-          setBookmarkedVods((prevBookmarks) => [...prevBookmarks, newBookmark]);
         } else {
           console.error("Error bookmarking VOD:", response.statusText);
         }
@@ -113,6 +136,7 @@ export function VodRoom() {
     } catch (error) {
       console.error("Error toggling bookmark:", error);
     }
+    setClickCnt((prev) => prev + 1);
   };
 
   return (
@@ -130,8 +154,8 @@ export function VodRoom() {
                   <Text>{vod.date}</Text>
                 </TextBox>
                 <button onClick={() => toggleBookmark(vod.id)}>
-                  {bookmarkedVods.some(
-                    (bookmark) => bookmark.vodId === vod.id
+                  {bookmarkedVods.find(
+                    (bookmark) => bookmark.vod?.id === vod.id
                   ) ? (
                     <MdOutlineStar style={{ width: "81px", height: "24px" }} />
                   ) : (

@@ -77,8 +77,9 @@ const ANoticeComponent = ({ onAddNotice }) => {
           },
           body: JSON.stringify(noticeData),
         });
+        const newNotice = await response.json();
         if (onAddNotice) {
-          onAddNotice({ title, content });
+          onAddNotice([newNotice]);
         }
         setTitle("");
         setContent("");

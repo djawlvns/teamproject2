@@ -39,7 +39,7 @@ export function LiveRoom() {
       <Container>
         <ClassContent>
           <ClassBoard>
-            <ClassBoardTxt>수업 동영상</ClassBoardTxt>
+            <ClassBoardTxt></ClassBoardTxt>
             <VideoPlayer videoURL={videoURL} />
           </ClassBoard>
         </ClassContent>

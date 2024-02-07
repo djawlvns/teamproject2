@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { fetchBookmarkedLectures } from "../Api/api";
+import { fetchBookmarkedLectures, apiGetMyInfo } from "../Api/api";
 
 const BookmarkBar = styled.div`
   width: 100%;
@@ -16,6 +16,7 @@ const BookmarkBar = styled.div`
 
 const BookmarkListBox = styled.div`
   padding: 50px 100px 0px 100px;
+  height: 100%;
   li {
     list-style: none;
   }
@@ -59,10 +60,10 @@ const Text = styled.div`
 
 const Bookmark = ({ toggleBookmark }) => {
   const [bookmarks, setBookmarks] = useState([]);
-
   useEffect(() => {
     const fetchBookmarks = async () => {
       try {
+        const token = sessionStorage.getItem("token");
         const response = await fetchBookmarkedLectures();
         if (response.resultCode === "SUCCESS") {
           setBookmarks(response.data);
@@ -75,6 +76,31 @@ const Bookmark = ({ toggleBookmark }) => {
     };
     fetchBookmarks();
   }, []);
+
+  async function handleDeleteBookmark(id) {
+    try {
+      const token = sessionStorage.getItem("token");
+      const response = await fetch(
+        `http://localhost:8080/api/bookmark/delete/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        setBookmarks(bookmarks.filter((bookmark) => bookmark.id !== id));
+        console.log("삭제");
+      } else {
+        console.error("삭제안됨");
+      }
+    } catch (error) {
+      console.log("에러발생:", error);
+    }
+  }
+
   console.log(bookmarks.map((bookmark) => bookmark.id));
   return (
     <BookmarkListBox>
@@ -89,7 +115,9 @@ const Bookmark = ({ toggleBookmark }) => {
                 <Text>
                   {bookmark.date} - {bookmark.description}
                 </Text>
-                <button onClick={() => toggleBookmark(bookmark.id)}></button>
+                <button onClick={() => handleDeleteBookmark(bookmark.id)}>
+                  즐겨찾기 삭제
+                </button>
               </TitleBox>
             </BookmarkBox>
           </li>

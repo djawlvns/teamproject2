@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { manageNotice } from "./Api/api";
+
 const Container = styled.div`
   width: 100%;
   min-height: 600px;
@@ -16,26 +17,59 @@ const Tablebody = styled.div`
 `;
 
 const Table = styled.table`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   border: 1px solid #ddd;
-  width: 100%;
-  max-width: 100%;
+  width: 1200px;
+  max-width: 1200px;
   margin-bottom: 20px;
-  border-collapse: collapse;
-  border-spacing: 0;
-`;
+  list-style: none;
 
+  li {
+    width: 1200px;
+    display: flex;
+    border-bottom: 1px solid black;
+    justify-content: center;
+    align-items: center;
+  }
+  h3 {
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  p {
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+const Thead = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  border-top: 3px solid black;
+  border-bottom: 3px solid black;
+  margin-bottom: 10px;
+  width: 1200px;
+  th {
+    font-size: 20px;
+    width: 400px;
+  }
+`;
 export function Noticeboard() {
-  const [data, setData] = useState([]);
+  const [noticeList, setNoticeList] = useState([]);
 
   useEffect(() => {
-    // boardList API에서 category가 3인 데이터만 가져옴
     const fetchData = async () => {
       try {
         const response = await manageNotice();
-        const filteredData = response.data.filter(
-          (item) => item.category === 3
-        );
-        setData(filteredData);
+        const sortedData = response.data.sort((a, b) => b.id - a.id);
+        setNoticeList(sortedData);
       } catch (error) {
         console.error("데이터를 불러오는 중 에러 발생:", error);
       }
@@ -47,33 +81,20 @@ export function Noticeboard() {
   return (
     <>
       <Container>
+        <Thead>
+          <th>제목</th>
+          <th>내용</th>
+          <th>작성자</th>
+        </Thead>
         <Tablebody>
           <Table>
-            <colgroup>
-              <col style={{ width: "80px" }} />
-              <col />
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "10%" }} />
-            </colgroup>
-            <thead>
-              <tr>
-                <th>순번</th>
-                <th>제목</th>
-                <th>글쓴이</th>
-                <th>등록일</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((item, index) => {
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.title} </td>
-                  <td>{item.author}</td>
-                  <td>{item.data} </td>
-                </tr>;
-              })}
-            </tbody>
+            {noticeList.map((notice, index) => (
+              <li key={index}>
+                <h3>{notice.title}</h3>
+                <p>{notice.content}</p>
+                <p>{notice.author}</p>
+              </li>
+            ))}
           </Table>
         </Tablebody>
       </Container>

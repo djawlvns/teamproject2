@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const ScheduleContainer = styled.div``;
 const StyledDiv = styled.div`
@@ -8,21 +9,40 @@ const StyledDiv = styled.div`
   background-color: #f1f3f5;
   display: flex;
   align-items: center;
+  &:hover {
+    color: black;
+  }
+  &.active {
+    color: black;
+  }
 `;
 const ScheduleTextBox = styled.div`
   font-size: 2rem;
+  max-height: 350px;
+  overflow-y: auto;
 `;
-
+const StyledNavLink = styled(NavLink)`
+  color: black;
+  text-decoration: none;
+  &:hover {
+    color: black;
+  }
+  &.active {
+    color: black;
+  }
+`;
 export function Schedule({ ScheduleList }) {
   return (
     <>
       <ScheduleContainer>
-        <StyledDiv>
-          <h2>시간표</h2>
-        </StyledDiv>
+        <StyledNavLink to="/main/scheduleboard">
+          <StyledDiv>
+            <h2>시간표</h2>
+          </StyledDiv>
+        </StyledNavLink>
         <ScheduleTextBox>
-          {Array.isArray(ScheduleList) && ScheduleList.length > 0 ? (
-            ScheduleList.map((Schedule, index) => (
+          {Array.isArray(ScheduleList.data) && ScheduleList.data.length > 0 ? (
+            ScheduleList.data.map((Schedule, index) => (
               <p key={index}>{`${Schedule.time} - ${Schedule.subject}`}</p>
             ))
           ) : (

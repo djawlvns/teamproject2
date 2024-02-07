@@ -24,8 +24,8 @@ import VideoRoom from "./Menu/VideoRoom";
 import { Define } from "./Define";
 import { Adminpage } from "./Admin/Adminpage";
 import { Profile } from "./Admin/Profile";
-import ANoticeComponent from "./Admin/ANotice";
 import { Noticeboard } from "./Noticeboard";
+import { ScheduleBoard } from "./ScheduleBoard";
 
 const client = new QueryClient();
 export const MyContext = createContext();
@@ -65,6 +65,7 @@ export function LayoutApp() {
                 </Route>
                 <Route path="mypage" element={<Mypage />} />
                 <Route path="notice" element={<Notice />} />
+                <Route path="scheduleboard" element={<ScheduleBoard />} />
                 <Route path="noticeboard" element={<Noticeboard />} />
                 <Route path="schedule" element={<Schedule />} />
                 <Route path="adminpage" element={<Adminpage />} />

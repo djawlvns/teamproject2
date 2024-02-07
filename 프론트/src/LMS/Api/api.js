@@ -95,7 +95,6 @@ export const fetchBookmarkedLectures = async () => {
 
 // 게시판
 export function boardList(board) {
-  console.log(board);
   return fetch(`http://localhost:8080/api/board`, {
     method: "GET",
     headers: {
@@ -165,8 +164,8 @@ export const manageSchedule = async (id, ScheduleData, method) => {
   try {
     const token = sessionStorage.getItem("token");
     const url = id
-      ? `http://localhost:8080/api/Schedule/${id}`
-      : "http://localhost:8080/api/Schedule";
+      ? `http://localhost:8080/api/schedules/${id}`
+      : "http://localhost:8080/api/schedules";
 
     const response = await fetch(url, {
       method: method,
@@ -185,6 +184,7 @@ export const manageSchedule = async (id, ScheduleData, method) => {
     return response.json();
   } catch (error) {
     console.error(`Error ${method.toLowerCase()}ing Schedule:`, error);
+    throw error;
   }
 };
 

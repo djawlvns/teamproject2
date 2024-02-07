@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { NavLink } from "react-router-dom";
 
 const ProfileContainer = styled.div`
   padding: 50px 200px 0px 200px;
@@ -11,6 +12,10 @@ const ProfileBox = styled.div`
   border: 1px solid gray;
   border-radius: 10px;
   overflow: hidden;
+  button {
+    background-color: white;
+    border: none;
+  }
 `;
 const ProfileBar = styled.div`
   width: 100%;
@@ -22,13 +27,6 @@ const ProfileBar = styled.div`
   color: white;
   font-size: 20px;
   font-weight: 700;
-`;
-const Class = styled.div`
-  height: 40px;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid gray;
-  padding-left: 10px;
 `;
 const Name = styled.div`
   height: 40px;
@@ -65,15 +63,13 @@ const Email = styled.div`
   border-bottom: 1px solid gray;
   padding-left: 10px;
 `;
-
-const IDType = styled.div`
+const LinkBox = styled.div`
   height: 40px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid gray;
-  padding-left: 10px;
+  justify-content: flex-end;
+  margin-right: 10px;
 `;
-
 export function Profile() {
   const { userId } = useParams();
   const [userDetails, setUserDetails] = useState();
@@ -109,6 +105,11 @@ export function Profile() {
           <Gender>성별: {userDetails?.gender}</Gender>
           <Age>생년월일: {userDetails?.birthDate}</Age>
           <Email>이메일: {userDetails?.email}</Email>
+          <LinkBox>
+            <NavLink to="/main/adminpage">
+              <button>유저 프로필로 이동→</button>
+            </NavLink>
+          </LinkBox>
           {/* <p>
             {userDetails?.rRoles.map((u) => (
               <p>{u.roleName}</p>
@@ -136,7 +137,6 @@ export function Profile() {
           </IDType> */}
         </ProfileBox>
       </ProfileContainer>
-      <button>저장하기</button>
     </>
   );
 }

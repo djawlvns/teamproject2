@@ -4,7 +4,7 @@ import { Schedule } from "./Schedule";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { manageNotice } from "./Api/api";
-import ANoticeComponent from "./Admin/ANotice";
+import { manageSchedule } from "./Api/api";
 
 const Container = styled.div`
   width: calc(100vw-10px);
@@ -48,6 +48,7 @@ const GoClassBtn = styled.div`
 const StyledMain = styled.div`
   width: 100%;
   height: 400px;
+  max-height: 400px;
   display: grid;
   grid-template-columns: 50% 50%;
 `;
@@ -90,13 +91,16 @@ const GoDefineBtn = styled.div`
 
 export function Home() {
   const [noticeList, setNoticeList] = useState([]);
-  const [scheduleText, setScheduleText] = useState("");
+  const [scheduleList, setScheduleList] = useState([]);
 
   useEffect(() => {
     const loadNotices = async () => {
       try {
         const fetchedNotices = await manageNotice(null, null, "GET");
-        setNoticeList(fetchedNotices || []);
+        if (fetchedNotices && Array.isArray(fetchedNotices.data)) {
+          const sortedNotices = fetchedNotices.data.sort((a, b) => b.id - a.id);
+          setNoticeList({ ...fetchedNotices, data: sortedNotices });
+        }
       } catch (error) {
         console.error("Error loading notices:", error);
       }
@@ -104,17 +108,40 @@ export function Home() {
 
     loadNotices();
   }, []);
-
   const handleAddNotice = async (notice) => {
     try {
       const response = await manageNotice(null, notice, "POST");
       console.log(response);
-      setNoticeList((prevNotices) => [...prevNotices, response]);
+      setNoticeList([response]);
     } catch (error) {
       console.error("Error adding notice:", error);
     }
   };
   console.log(noticeList);
+
+  useEffect(() => {
+    const loadSchedules = async () => {
+      try {
+        const fetchedSchedules = await manageSchedule(null, null, "GET");
+        setScheduleList(fetchedSchedules || []);
+      } catch (error) {
+        console.error("Error loading schedules:", error);
+      }
+    };
+
+    loadSchedules();
+  }, []);
+
+  const handleAddSchedule = async (schedules) => {
+    try {
+      const response = await manageSchedule(null, schedules, "POST");
+      console.log(response);
+      setScheduleList(response || []);
+    } catch (error) {
+      console.error("Error adding schedule:", error);
+    }
+  };
+  console.log(scheduleList);
   return (
     <>
       <Container>
@@ -146,7 +173,7 @@ export function Home() {
         </DefineContainer>
         <StyledMain>
           <Notice noticeList={noticeList} />
-          <Schedule scheduleText={scheduleText} />
+          <Schedule ScheduleList={scheduleList} />
         </StyledMain>
       </Container>
     </>

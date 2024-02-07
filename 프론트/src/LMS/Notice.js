@@ -13,7 +13,9 @@ const StyledDiv = styled.div`
   align-items: center;
 `;
 const NoticeTextBox = styled.div`
-  font-size: 2rem;
+  font-size: 22px;
+  max-height: 350px;
+  overflow-y: auto;
 `;
 const StyledNavLink = styled(NavLink)`
   color: black;
@@ -35,7 +37,7 @@ export function Notice({ noticeList }) {
           </StyledDiv>
         </StyledNavLink>
         <NoticeTextBox>
-          {Array.isArray(noticeList) && noticeList.length > 0 ? (
+          {Array.isArray(noticeList.data) && noticeList.data.length > 0 ? (
             noticeList.data.map((notice, index) => (
               <p key={index}>{`${notice.title} - ${notice.content}`}</p>
             ))

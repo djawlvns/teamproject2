@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { boardList } from "../Api/api";
+import { Button } from "antd";
+import BoardWrite from "./BoardWrite";
 
 const Container = styled.div`
   width: 100%;
@@ -27,7 +29,6 @@ const Table = styled.table`
 `;
 
 const ButtonContainer = styled.div`
-  position: absolute;
   top: 8%;
   right: 17%;
   margin: 20px;
@@ -35,17 +36,28 @@ const ButtonContainer = styled.div`
 const WriteButton = styled.button``;
 
 export function Free() {
-  const [data, setData] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [isWriting, setIsWriting] = useState(false);
 
+  const handleWriteButtonClick = () => {
+    setIsWriting(true);
+  };
+  const handleWriteSuccess = () => {
+    setIsWriting(false);
+  };
   useEffect(() => {
     // boardList API에서 category가 1인 데이터만 가져옴
     const fetchData = async () => {
       try {
         const response = await boardList();
-        const filteredData = response.data.data.filter(
-          (item) => item.category === 1
-        );
-        setData(filteredData);
+
+        if (response.resultCode === "SUCCESS") {
+          const posts = response.data;
+
+          setPosts(posts);
+          console.log(posts);
+        } else {
+        }
       } catch (error) {
         console.error("데이터를 불러오는 중 에러 발생:", error);
       }
@@ -54,9 +66,6 @@ export function Free() {
     fetchData();
   }, []);
 
-  const handleWriteButtonClick = () => {
-    console.log("클릭");
-  };
   return (
     <>
       <Container>
@@ -73,26 +82,29 @@ export function Free() {
               <tr>
                 <th>순번</th>
                 <th>제목</th>
+                <th>내용</th>
                 <th>글쓴이</th>
-                <th>등록일</th>
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => {
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.title} </td>
-                  <td>{item.author}</td>
-                  <td>{item.data} </td>
-                </tr>;
-              })}
+              {posts
+                .filter((item) => item.category === "1")
+                .map((item, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item.title} </td>
+                    <td>{item.text} </td>
+                    <td>{item.author}</td>
+                  </tr>
+                ))}
             </tbody>
           </Table>
         </Tablebody>
         <ButtonContainer>
-          <WriteButton onClick={handleWriteButtonClick}>글쓰기</WriteButton>
+          <Button onClick={handleWriteButtonClick}>글쓰기</Button>
         </ButtonContainer>
       </Container>
+      {isWriting && <BoardWrite onSuccess={handleWriteSuccess} />}
     </>
   );
 }

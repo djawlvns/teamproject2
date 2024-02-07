@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
@@ -47,8 +47,17 @@ const DropdownItem = styled.div`
   }
 `;
 
+const checkIsAdmin = () => {
+  return true;
+};
+
 export function NavBar() {
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    setIsAdmin(checkIsAdmin());
+  }, []);
 
   const openDropdown = () => {
     setIsDropdownOpen(true);
@@ -100,7 +109,7 @@ export function NavBar() {
           </DropdownContent>
         </MenuItem>
         <NavLink
-          to="/main/mypage"
+          to={isAdmin ? "/main/adminpage" : "/main/mypage"}
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <MenuItem>

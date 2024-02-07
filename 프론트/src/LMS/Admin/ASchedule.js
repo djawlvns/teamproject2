@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState } from "react";
-import { manageSchedule } from "../Api/api";
+import { apiGetMyInfo } from "../Api/api";
 
 const Container = styled.div`
   padding: 50px 200px 0px 200px;
@@ -50,19 +50,20 @@ const UploadBtn = styled.div`
     height: 50px;
   }
 `;
-const fixedTimes = [
-  "08:00-08:50",
-  "09:00-09:50",
-  "10:00-10:50",
-  "11:00-11:50",
-  "12:00-12:50",
-  "14:00-14:50",
-  "15:00-15:50",
-  "16:00-16:50",
-];
+
 const AScheduleComponent = ({ onAddSchedule }) => {
+  const fixedTimes = [
+    "08:00-08:50",
+    "09:00-09:50",
+    "10:00-10:50",
+    "11:00-11:50",
+    "12:00-12:50",
+    "14:00-14:50",
+    "15:00-15:50",
+    "16:00-16:50",
+  ];
   const [schedules, setSchedules] = useState(
-    Array(8).fill({ time: "", subject: "" })
+    fixedTimes.map((time) => ({ time, subject: "" }))
   );
 
   const handleScheduleChange = (index, field, value) => {
@@ -78,11 +79,36 @@ const AScheduleComponent = ({ onAddSchedule }) => {
   const handleSubmit = async () => {
     console.log("Submit Schedules", schedules);
     try {
-      //await manageSchedule(null, schedules, "POST");
-      if (onAddSchedule) {
-        onAddSchedule(schedules);
+      const token = sessionStorage.getItem("token");
+      const user = await apiGetMyInfo();
+      const isAdmin = user.data.roleDtoSet.some(
+        (role) => role.roleName === "ROLE_ADMIN"
+      );
+      if (isAdmin) {
+        for (const schedule of schedules) {
+          const scheduleData = {
+            admin: user.data.loginId,
+            time: schedule.time,
+            subject: schedule.subject,
+          };
+          const response = await fetch("http://localhost:8080/api/schedules", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(scheduleData),
+          });
+          if (!response.ok) {
+            throw new Error("Failed to post schedule");
+          }
+        }
+
+        if (onAddSchedule) {
+          onAddSchedule(schedules);
+        }
+        setSchedules(fixedTimes.map((time) => ({ time, subject: "" })));
       }
-      setSchedules(fixedTimes.map((time) => ({ time, subject: "" })));
     } catch (error) {
       console.error("Error posting schedule:", error);
     }
