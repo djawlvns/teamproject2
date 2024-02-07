@@ -33,7 +33,7 @@ public class NoticeController {
 	public NoticeController(NoticeServiceImpl noticeServiceImpl) {
 		this.noticeServiceImpl = noticeServiceImpl;
 	}
-	@Secured({"ROLE_ADMIN","ROLE_USER"})
+	@Secured("ROLE_ADMIN")
 	@PostMapping("/api/notice")
 	public ResponseEntity<BaseResponse<Void>> createNotice(@RequestBody @Valid NoticeDto noticeDto) {
 		return new ResponseEntity<>(
