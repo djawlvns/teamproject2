@@ -16,6 +16,9 @@ const BookmarkBar = styled.div`
 
 const BookmarkListBox = styled.div`
   padding: 50px 100px 0px 100px;
+  li {
+    list-style: none;
+  }
 `;
 
 const BookmarkList = styled.div`
@@ -33,22 +36,25 @@ const BookmarkList = styled.div`
 const BookmarkBox = styled.div`
   display: flex;
   width: 100%;
+  list-style: none;
 `;
 
 const Thumbnail = styled.img`
   width: 300px;
-  height: 50px;
+  height: 150px;
 `;
 
 const TitleBox = styled.div`
   width: 100%-300px;
-  background-color: beige;
+  padding-left: 12px;
 `;
 
-const Title = styled.div``;
+const Title = styled.div`
+  font-size: 30px;
+`;
 
 const Text = styled.div`
-  background-color: white;
+  font-size: 16px;
 `;
 
 const Bookmark = ({ toggleBookmark }) => {

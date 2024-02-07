@@ -104,16 +104,16 @@ export function Profile() {
       <ProfileContainer>
         <ProfileBox>
           <ProfileBar>유저 세부 프로필</ProfileBar>
-          <ID>ID: {userDetails?.id}</ID>
+          <ID>ID: {userDetails?.loginId}</ID>
           <Name>이름: {userDetails?.name}</Name>
           <Gender>성별: {userDetails?.gender}</Gender>
-          <Age>생년월일: {userDetails?.birthdate}</Age>
+          <Age>생년월일: {userDetails?.birthDate}</Age>
           <Email>이메일: {userDetails?.email}</Email>
-          <p>
+          {/* <p>
             {userDetails?.rRoles.map((u) => (
               <p>{u.roleName}</p>
             ))}
-          </p>
+          </p> */}
           {/* <IDType>
             <p>
               학생

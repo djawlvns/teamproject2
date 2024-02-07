@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
-import { Player } from "../Module/Player";
-import { LiveRoom } from "./LiveRoom.js";
 import { LiveSchedule } from "../Module/LiveSchedule.js";
 
 const Container = styled.div`

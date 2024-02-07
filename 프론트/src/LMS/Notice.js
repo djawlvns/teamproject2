@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { Home } from "./Home";
 
 const NoticeContainer = styled.div``;
 
@@ -35,7 +36,7 @@ export function Notice({ noticeList }) {
         </StyledNavLink>
         <NoticeTextBox>
           {Array.isArray(noticeList) && noticeList.length > 0 ? (
-            noticeList.map((notice, index) => (
+            noticeList.data.map((notice, index) => (
               <p key={index}>{`${notice.title} - ${notice.content}`}</p>
             ))
           ) : (

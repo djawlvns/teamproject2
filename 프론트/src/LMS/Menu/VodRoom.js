@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { Route, Link, Routes } from "react-router-dom";
 import Bookmark from "../Mypage/Bookmark";
 import { apiGetMyInfo } from "../Api/api";
+import { MdOutlineStar } from "react-icons/md";
+import { MdOutlineStarBorder } from "react-icons/md";
 
 const Container = styled.div`
   display: flex;
@@ -50,52 +52,66 @@ export function VodRoom() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 서버에서 VOD 목록을 가져옴
         const response = await fetch("http://localhost:8080/api/vod");
         const data = await response.json();
-
-        // 가져온 데이터로 상태 업데이트
         setVods(data.data);
         console.log(data.data);
       } catch (error) {
         console.error("Error fetching VOD data:", error);
       }
     };
-    // 데이터 로딩
     fetchData();
   }, []);
-  // console.log(vods);
-  const handleBookmarkClick = async (vod) => {
+
+  const toggleBookmark = async (vodId) => {
     try {
       const token = sessionStorage.getItem("token");
       const user = await apiGetMyInfo();
 
-      const newBookmark = {
-        thumbnail: vod.thumbnail,
-        title: vod.title,
-        date: vod.date,
-        description: vod.description,
-        url: vod.url,
-        vodId: vod.id,
-        userId: user.data.id,
-      };
-
-      const response = await fetch("http://localhost:8080/api/bookmark", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newBookmark),
-      });
-      console.log(response);
-      if (response.ok) {
-        setBookmarkedVods((prevBookmarks) => [...prevBookmarks, vods.id]);
+      const existingBookmark = bookmarkedVods.find(
+        (bookmark) => bookmark.vodId === vodId
+      );
+      if (existingBookmark) {
+        await fetch(
+          `http://localhost:8080/api/bookmark/${existingBookmark.id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setBookmarkedVods((prevBookmarks) =>
+          prevBookmarks.filter((bookmark) => bookmark.vodId !== vodId)
+        );
       } else {
-        console.error("Error bookmarking VOD:", response.statusText);
+        const vodToAdd = vods.find((vod) => vod.id === vodId);
+        const newBookmark = {
+          thumbnail: vodToAdd.thumbnail,
+          title: vodToAdd.title,
+          date: vodToAdd.date,
+          description: vodToAdd.description,
+          url: vodToAdd.url,
+          vodId: vodToAdd.id,
+          userId: user.data.id,
+        };
+
+        const response = await fetch("http://localhost:8080/api/bookmark", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newBookmark),
+        });
+        if (response.ok) {
+          setBookmarkedVods((prevBookmarks) => [...prevBookmarks, newBookmark]);
+        } else {
+          console.error("Error bookmarking VOD:", response.statusText);
+        }
       }
     } catch (error) {
-      console.error("Error bookmarking VOD:", error);
+      console.error("Error toggling bookmark:", error);
     }
   };
 
@@ -113,15 +129,26 @@ export function VodRoom() {
                   <Title>{vod.title}</Title>
                   <Text>{vod.date}</Text>
                 </TextBox>
-                <button onClick={() => handleBookmarkClick(vod)}>
-                  즐겨찾기
+                <button onClick={() => toggleBookmark(vod.id)}>
+                  {bookmarkedVods.some(
+                    (bookmark) => bookmark.vodId === vod.id
+                  ) ? (
+                    <MdOutlineStar style={{ width: "81px", height: "24px" }} />
+                  ) : (
+                    <MdOutlineStarBorder
+                      style={{ width: "81px", height: "24px" }}
+                    />
+                  )}
                 </button>
               </VodBox>
             ))}
         </VodListContainer>
       </Container>
       <Routes>
-        <Route path="/main/bookmark" element={<Bookmark />} />
+        <Route
+          path="/main/bookmark"
+          element={<Bookmark toggleBookmark={toggleBookmark} />}
+        />
       </Routes>
     </>
   );

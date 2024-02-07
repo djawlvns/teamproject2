@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import { useState, useRef, useEffect } from "react";
-import { Player } from "../Module/Player";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import VideoPlayer from "../Module/VideoPlayer";
 
 const Container = styled.div`
@@ -33,37 +31,16 @@ const ClassBoardTxt = styled.div`
 `;
 
 export function LiveRoom() {
-  const [playing, setPlaying] = useState(true);
-  const { id } = useParams();
-  const playerRef = useRef(null);
+  const location = useLocation();
+  const videoURL = new URLSearchParams(location.search).get("url");
 
-  //played,duration,onSeek 값 설정
-  const [played, setPlayed] = useState(0);
-  const [duration, setDuration] = useState(0);
-
-  // const onSeek = (value, callback) => {
-  //   if (playerRef.current) {
-  //     setPlayed(value);
-  //     playerRef.current.seekTo(value);
-  //   }
-  //   if (callback) {
-  //     callback(value);
-  //   }
-  // };
   return (
     <>
       <Container>
         <ClassContent>
           <ClassBoard>
             <ClassBoardTxt>수업 동영상</ClassBoardTxt>
-            <Player
-              ref={playerRef}
-              playing={playing}
-              setPlaying={setPlaying}
-              onDuration={(value) => setDuration(value)}
-              onProgress={({ played }) => setPlayed(played)}
-              vodId={id}
-            />
+            <VideoPlayer videoURL={videoURL} />
           </ClassBoard>
         </ClassContent>
       </Container>

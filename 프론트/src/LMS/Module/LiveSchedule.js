@@ -45,6 +45,7 @@ const StartClassBox = styled.div`
   align-items: center;
   font-size: 1rem;
 `;
+
 export function LiveSchedule(props) {
   return (
     <>
@@ -56,7 +57,10 @@ export function LiveSchedule(props) {
         {/* 여기에 DB에서 불러온 강의이름이 들어가야함 */}
         <ClassNameBox>{props.vodData?.title}</ClassNameBox>
         <StartClassBox>
-          <NavLink to={`/main/classroom/live/${props.vodId}`}>
+          <NavLink
+            to={`/main/classroom/live?url=${props.vodData?.url}`}
+            style={{ textDecoration: "none", color: "black" }}
+          >
             강의 듣기
           </NavLink>
         </StartClassBox>

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { useState } from "react";
 import { manageNotice } from "../Api/api";
 import { apiGetMyInfo } from "../Api/api";
+import { Home } from "../Home";
 
 const Container = styled.div`
   padding: 50px 200px 0px 200px;
@@ -86,6 +87,7 @@ const ANoticeComponent = ({ onAddNotice }) => {
       console.error("Error posting notice:", error);
     }
   };
+
   return (
     <Container>
       <NoticeBox>

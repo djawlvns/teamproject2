@@ -22,6 +22,7 @@ const ProfileBar = styled.div`
   color: white;
   font-size: 20px;
   font-weight: 700;
+  border-radius: 10px;
 `;
 const UserName = styled.div`
   height: 40px;

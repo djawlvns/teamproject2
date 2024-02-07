@@ -89,8 +89,8 @@ const GoDefineBtn = styled.div`
 `;
 
 export function Home() {
-  const [noticeList, setNoticeList] = useState([]); // 공지사항 내용 상태
-  const [scheduleText, setScheduleText] = useState(""); // 강의시간표 내용 상태
+  const [noticeList, setNoticeList] = useState([]);
+  const [scheduleText, setScheduleText] = useState("");
 
   useEffect(() => {
     const loadNotices = async () => {
@@ -100,12 +100,10 @@ export function Home() {
       } catch (error) {
         console.error("Error loading notices:", error);
       }
-      console.log("Notice List after loading:", noticeList);
     };
 
     loadNotices();
   }, []);
-  console.log("Get");
 
   const handleAddNotice = async (notice) => {
     try {
@@ -116,7 +114,7 @@ export function Home() {
       console.error("Error adding notice:", error);
     }
   };
-
+  console.log(noticeList);
   return (
     <>
       <Container>
