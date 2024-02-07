@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import { Player } from "../Module/Player";
 import { useParams } from "react-router-dom";
+import VideoPlayer from "../Module/VideoPlayer";
 
 const Container = styled.div`
   width: 100vw;
@@ -40,15 +41,15 @@ export function LiveRoom() {
   const [played, setPlayed] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  const onSeek = (value, callback) => {
-    if (playerRef.current) {
-      setPlayed(value);
-      playerRef.current.seekTo(value);
-    }
-    if (callback) {
-      callback(value);
-    }
-  };
+  // const onSeek = (value, callback) => {
+  //   if (playerRef.current) {
+  //     setPlayed(value);
+  //     playerRef.current.seekTo(value);
+  //   }
+  //   if (callback) {
+  //     callback(value);
+  //   }
+  // };
   return (
     <>
       <Container>

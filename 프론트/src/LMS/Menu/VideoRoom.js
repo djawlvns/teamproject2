@@ -36,20 +36,6 @@ const VideoRoom = () => {
   const location = useLocation();
   const videoURL = new URLSearchParams(location.search).get("url");
 
-  // const videoURL = getVideoURLById(videoId);
-
-  // //DB에 저장
-  // const getVideoURLById = (videoId) => {
-  //   switch (videoId) {
-  //     case "1":
-  //       return "https://youtu.be/dh4hdtZ00EU?si=qbQcbmhsOLRHdKJC";
-  //     case "2":
-  //       return "https://youtu.be/V7TXlm7kpaE?si=Te8a2rBGNmj3Hg_4";
-  //     default:
-  //       return "https://youtu.be/dh4hdtZ00EU?si=qbQcbmhsOLRHdKJC";
-  //   }
-  // };
-
   return (
     <Container>
       <ClassContent>

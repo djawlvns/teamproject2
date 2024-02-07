@@ -59,7 +59,25 @@ const StartClassBox = styled.div`
   align-items: center;
   font-size: 1rem;
 `;
+
 export function ClassRoom() {
+  const [vodData, setVodData] = useState(null);
+
+  useEffect(() => {
+    const fetchVodData = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/vod");
+        if (!response.ok) throw new Error("Network response was not ok");
+        const data = await response.json();
+        setVodData(data);
+      } catch (error) {
+        console.error("Error fetching VOD data: ", error);
+      }
+    };
+
+    fetchVodData();
+  }, []);
+  console.log("data");
   return (
     <>
       <Container>
@@ -70,13 +88,13 @@ export function ClassRoom() {
           <ClassNameBox>강의명</ClassNameBox>
           <StartClassBox>수강진행</StartClassBox>
         </FilterBar>
-        <ScheduleBox>{RenderLiveSchedule()}</ScheduleBox>
+        <ScheduleBox>{RenderLiveSchedule(vodData)}</ScheduleBox>
       </Container>
     </>
   );
 }
 
-function RenderLiveSchedule() {
+function RenderLiveSchedule(vodData) {
   const liveSchedules = [];
   const formatTime = (hour) => {
     return hour < 10 ? `0${hour}` : `${hour}`;
@@ -89,6 +107,7 @@ function RenderLiveSchedule() {
         period={`${i}교시`}
         time={`(${formatTime(j)}:00 ~ ${formatTime(j)}:50)`}
         vodId={i}
+        vodData={vodData?.data.length > 0 ? vodData.data[i - 1] : null}
       />
     );
   }

@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import ReactPlayer from "react-player";
 import styled from "styled-components";
 import ProgressBar from "./ProgressBar";
+import VideoPlayer from "./VideoPlayer";
 
 const Container = styled.div`
   position: relative;
@@ -30,23 +31,24 @@ const PlayerCoverbox = styled.div`
 `;
 
 export function Player({ playing, setPlaying, vodId }) {
-  console.log("vod id", vodId);
   //상위 컴포넌트에 playing,setPlayin true로 정의
   const playerRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [played, setPlayed] = useState(0);
   const [liveCheck, setliveCheck] = useState(true);
   const [duration, setDuration] = useState(0); //총 재생시간
-  const [curr, setCurr] = useState("");
+  const [curr, setCurr] = useState();
+  const [data, setData] = useState();
 
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/vod");
+        let response = await fetch("http://localhost:8080/api/vod");
         if (!response.ok) throw new Error("Error");
-        const data = await response.json();
-        if (data.data && data.data.length > 0) {
-          setCurr(data.data[0].url);
+        response = await response.json();
+        if (response.data && response.data.length > 0) {
+          console.log("fetch", response.data);
+          setData(response.data);
         }
       } catch (error) {
         console.error("Error fetching videos: ", error);
@@ -56,10 +58,20 @@ export function Player({ playing, setPlaying, vodId }) {
     fetchVideos();
   }, []);
 
-  const onEnded = () => {
-    setCurr("");
-    setPlaying(true);
-  };
+  useEffect(() => {
+    if (data) {
+      setCurr(data[vodId - 1].url);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    console.log(curr);
+  }, [curr]);
+
+  // const onEnded = () => {
+  //   setCurr("");
+  //   setPlaying(true);
+  // };
   const onSeek = (value) => {
     if (playerRef.current) {
       setPlayed(value);
@@ -70,14 +82,13 @@ export function Player({ playing, setPlaying, vodId }) {
       console.log("이거 호출 되니?");
     }
   };
-  console.log(curr);
+  console.log("url", curr);
   return (
     <>
       <Container>
-        <PlayerCoverbox />
-        <ReactPlayer
+        {/* <PlayerCoverbox /> */}
+        {/* <ReactPlayer
           url={curr} // 영상url삽입
-          ref={playerRef}
           className="player" //  클래스 이름 지정하여 스탙일 적용
           playing={playing} // 재생상태, true = 재생 / false = 일시정지
           controls={false} // 유튜브 재생 컨트롤 바 노출 여부
@@ -87,7 +98,8 @@ export function Player({ playing, setPlaying, vodId }) {
           onReady={() => setReady(true)} // 영상이 로드되어 준비된 상태
           onDuration={(value) => setDuration(value)}
           onProgress={({ played }) => setPlayed(played)}
-        />
+        /> */}
+        <VideoPlayer videoURL={curr} />
         {liveCheck ? null : (
           <ProgressBar played={played} duration={duration} onSeek={onSeek} />
         )}
@@ -95,8 +107,8 @@ export function Player({ playing, setPlaying, vodId }) {
     </>
   );
 }
-function formatTime(seconds) {
-  const minutes = Math.floor(seconds / 60);
-  seconds = Math.floor(seconds % 60);
-  return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-}
+// function formatTime(seconds) {
+//   const minutes = Math.floor(seconds / 60);
+//   seconds = Math.floor(seconds % 60);
+//   return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+// }
