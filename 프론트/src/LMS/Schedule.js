@@ -17,7 +17,7 @@ const StyledDiv = styled.div`
   }
 `;
 const ScheduleTextBox = styled.div`
-  font-size: 2rem;
+  font-size: 28px;
   max-height: 350px;
   overflow-y: auto;
 `;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { apiGetMyInfo } from "../LMS/Api/api";
 
 const Menu = styled.div`
   display: flex;
@@ -47,25 +48,44 @@ const DropdownItem = styled.div`
   }
 `;
 
-const checkIsAdmin = () => {
-  return false;
-};
-
 export function NavBar() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    setIsAdmin(checkIsAdmin());
+    const fetchrole = async () => {
+      try {
+        const response = await apiGetMyInfo();
+        if (response.resultCode === "SUCCESS") {
+          const roles = response.data.roleDtoSet.map((role) => role.roleName);
+          const isAdmin = roles.some((role) => role === "ROLE_ADMIN");
+          setIsAdmin(isAdmin);
+          console.log(isAdmin);
+        } else {
+        }
+      } catch (error) {
+        console.error("에러발생:", error);
+      }
+    };
+    fetchrole();
   }, []);
 
-  const openDropdown = () => {
-    setIsDropdownOpen(true);
-  };
+  // useEffect(() => {
+  //   checkIsAdmin().then((result) => {
+  //     setIsAdmin(result);
+  //   });
+  // }, []);
 
-  const closeDropdown = () => {
-    setIsDropdownOpen(false);
-  };
+  // const checkIsAdmin = () => {
+  //   return new Promise((resolve) => {
+  //     // 예시로, 1초 후에 관리자임을 확인하는 상황을 가정
+  //     setTimeout(() => resolve(true), 1000);
+  //   });
+  // };
+
+  const openDropdown = () => setIsDropdownOpen(true);
+  const closeDropdown = () => setIsDropdownOpen(false);
+
   return (
     <>
       <Menu>
