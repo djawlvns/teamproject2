@@ -24,6 +24,7 @@ const Bbox2 = styled.div`
 
 export default function BoardWrite({ onSuccess }) {
   const [isModalVisible, setIsModalVisible] = useState(true);
+  const [userid, setUserId] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     text: "",
@@ -32,17 +33,33 @@ export default function BoardWrite({ onSuccess }) {
   });
 
   useEffect(() => {
-    apiGetMyInfo()
-      .then((user) => {
-        setFormData((prevData) => ({
-          ...prevData,
-          author: user.loginId,
-        }));
-      })
-      .catch((error) => {
-        console.log("로그인이 안되어 있습니다.", error);
-      });
+    const fetchUser = async () => {
+      try {
+        const response = await apiGetMyInfo();
+        if (response.resultCode === "SUCCESS") {
+          const user = response.data.loginId;
+
+          setFormData((prevData) => ({ ...prevData, author: user }));
+          console.log(response.data.loginId);
+        } else {
+        }
+      } catch (error) {
+        console.error("데이터 실패:", error);
+      }
+    };
+    fetchUser();
   }, []);
+  //   apiGetMyInfo()
+  //     .then((user) => {
+  //       setFormData((prevData) => ({
+  //         ...prevData,
+  //         author: user.loginId,
+  //       }));
+  //     })
+  //     .catch((error) => {
+  //       console.log("로그인이 안되어 있습니다.", error);
+  //     });
+  // }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -106,6 +123,7 @@ export default function BoardWrite({ onSuccess }) {
             value={formData.category}
             onChange={handleChange}
           >
+            <option>===선택===</option>
             <option value="자유게시판">자유게시판</option>
             <option value="건의게시판">건의게시판</option>
             <option value="문의게시판">문의게시판</option>
@@ -124,10 +142,6 @@ export default function BoardWrite({ onSuccess }) {
           <label>내용:</label>
           <textarea name="text" value={formData.text} onChange={handleChange} />
         </Bbox2>
-        <Bbox>
-          <label>작성자 ID:</label>
-          <input type="text" name="author" value={formData.author} readOnly />
-        </Bbox>
       </Form>
     </Modal>
   );
