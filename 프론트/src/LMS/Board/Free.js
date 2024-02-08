@@ -26,6 +26,12 @@ const Table = styled.table`
   margin-bottom: 20px;
   border-collapse: collapse;
   border-spacing: 0;
+  td {
+    text-align: center;
+  }
+  tr {
+    border-bottom: 1px solid black;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -46,7 +52,6 @@ export function Free() {
     setIsWriting(false);
   };
   useEffect(() => {
-    // boardList API에서 category가 1인 데이터만 가져옴
     const fetchData = async () => {
       try {
         const response = await boardList();
@@ -73,10 +78,9 @@ export function Free() {
           <Table>
             <colgroup>
               <col style={{ width: "80px" }} />
+              <col style={{ width: "25%" }} />
               <col />
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "10%" }} />
+              <col style={{ width: "15%" }} />
             </colgroup>
             <thead>
               <tr>

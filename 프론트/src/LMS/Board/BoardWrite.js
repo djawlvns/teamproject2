@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button } from "antd";
 import styled from "styled-components";
+import { apiGetMyInfo } from "../Api/api";
 
 const Form = styled.div``;
 const Bbox = styled.div`
@@ -25,8 +26,23 @@ export default function BoardWrite({ onSuccess }) {
   const [isModalVisible, setIsModalVisible] = useState(true);
   const [formData, setFormData] = useState({
     title: "",
-    content: "",
+    text: "",
+    author: "",
+    category: "",
   });
+
+  useEffect(() => {
+    apiGetMyInfo()
+      .then((user) => {
+        setFormData((prevData) => ({
+          ...prevData,
+          author: user.loginId,
+        }));
+      })
+      .catch((error) => {
+        console.log("로그인이 안되어 있습니다.", error);
+      });
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,16 +50,28 @@ export default function BoardWrite({ onSuccess }) {
   };
 
   const handleSubmit = async () => {
+    const categoryMapping = {
+      자유게시판: 1,
+      건의게시판: 2,
+      문의게시판: 3,
+    };
+
+    const payload = {
+      ...formData,
+      category: categoryMapping[formData.category],
+    };
+
     try {
       const response = await fetch("http://localhost:8080/api/board", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
       if (response.ok) {
         onSuccess();
+        setIsModalVisible(false); // 성공 시 모달 닫기
       } else {
         console.error("게시글 저장 실패");
       }
@@ -59,7 +87,7 @@ export default function BoardWrite({ onSuccess }) {
   return (
     <Modal
       title="게시글 작성"
-      visible={isModalVisible}
+      open={isModalVisible}
       onCancel={handleCancel}
       footer={[
         <Button key="submit" type="primary" onClick={handleSubmit}>
@@ -72,6 +100,18 @@ export default function BoardWrite({ onSuccess }) {
     >
       <Form>
         <Bbox>
+          <label>카테고리:</label>
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+          >
+            <option value="자유게시판">자유게시판</option>
+            <option value="건의게시판">건의게시판</option>
+            <option value="문의게시판">문의게시판</option>
+          </select>
+        </Bbox>
+        <Bbox>
           <label>제목:</label>
           <input
             type="text"
@@ -82,12 +122,12 @@ export default function BoardWrite({ onSuccess }) {
         </Bbox>
         <Bbox2>
           <label>내용:</label>
-          <textarea
-            name="content"
-            value={formData.content}
-            onChange={handleChange}
-          />
+          <textarea name="text" value={formData.text} onChange={handleChange} />
         </Bbox2>
+        <Bbox>
+          <label>작성자 ID:</label>
+          <input type="text" name="author" value={formData.author} readOnly />
+        </Bbox>
       </Form>
     </Modal>
   );

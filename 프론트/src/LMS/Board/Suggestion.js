@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { boardList } from "../Api/api";
+import { Button } from "antd";
+import BoardWrite from "./BoardWrite";
 
 const Container = styled.div`
   width: 100%;
@@ -23,20 +25,41 @@ const Table = styled.table`
   margin-bottom: 20px;
   border-collapse: collapse;
   border-spacing: 0;
+  td {
+    text-align: center;
+  }
+  tr {
+    border-bottom: 1px solid black;
+  }
 `;
-
+const ButtonContainer = styled.div`
+  top: 8%;
+  right: 17%;
+  margin: 20px;
+`;
 export function Suggestion() {
-  const [data, setData] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [isWriting, setIsWriting] = useState(false);
+
+  const handleWriteButtonClick = () => {
+    setIsWriting(true);
+  };
+  const handleWriteSuccess = () => {
+    setIsWriting(false);
+  };
 
   useEffect(() => {
-    // boardList API에서 category가 2인 데이터만 가져옴
     const fetchData = async () => {
       try {
         const response = await boardList();
-        const filteredData = response.data.filter(
-          (item) => item.category === 2
-        );
-        setData(filteredData);
+
+        if (response.resultCode === "SUCCESS") {
+          const posts = response.data;
+
+          setPosts(posts);
+          console.log(posts);
+        } else {
+        }
       } catch (error) {
         console.error("데이터를 불러오는 중 에러 발생:", error);
       }
@@ -52,32 +75,37 @@ export function Suggestion() {
           <Table>
             <colgroup>
               <col style={{ width: "80px" }} />
+              <col style={{ width: "25%" }} />
               <col />
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "10%" }} />
+              <col style={{ width: "15%" }} />
             </colgroup>
             <thead>
               <tr>
                 <th>순번</th>
                 <th>제목</th>
+                <th>내용</th>
                 <th>글쓴이</th>
-                <th>등록일</th>
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => {
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.title} </td>
-                  <td>{item.author}</td>
-                  <td>{item.data} </td>
-                </tr>;
-              })}
+              {posts
+                .filter((item) => item.category === "2")
+                .map((item, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item.title} </td>
+                    <td>{item.text}</td>
+                    <td>{item.author} </td>
+                  </tr>
+                ))}
             </tbody>
           </Table>
         </Tablebody>
-      </Container>{" "}
+        <ButtonContainer>
+          <Button onClick={handleWriteButtonClick}>글쓰기</Button>
+        </ButtonContainer>
+      </Container>
+      {isWriting && <BoardWrite onSuccess={handleWriteSuccess} />}
     </>
   );
 }
