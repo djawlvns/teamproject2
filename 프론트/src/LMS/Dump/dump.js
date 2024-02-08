@@ -42,7 +42,7 @@
 // 공지사항
 // select * from notice;
 
-//VOD LIST
+// VOD LIST
 
 // INSERT INTO vods (thumbnail, title, date, url, description)
 // VALUES

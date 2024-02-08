@@ -95,9 +95,11 @@ export const fetchBookmarkedLectures = async () => {
 
 // 게시판
 export function boardList(board) {
+  const token = sessionStorage.getItem("token");
   return fetch(`http://localhost:8080/api/board`, {
     method: "GET",
     headers: {
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
   }).then((response) => response.json());
