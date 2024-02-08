@@ -57,7 +57,19 @@ const Title = styled.div`
 const Text = styled.div`
   font-size: 16px;
 `;
-
+const BookmarkBtn = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  button {
+    width: 100px;
+    height: 100%;
+  }
+  button:hover {
+    background-color: #141827;
+    color: white;
+  }
+`;
 const Bookmark = ({ toggleBookmark }) => {
   const [bookmarks, setBookmarks] = useState([]);
   useEffect(() => {
@@ -115,10 +127,12 @@ const Bookmark = ({ toggleBookmark }) => {
                 <Text>
                   {bookmark.date} - {bookmark.description}
                 </Text>
+              </TitleBox>
+              <BookmarkBtn>
                 <button onClick={() => handleDeleteBookmark(bookmark.id)}>
                   즐겨찾기 삭제
                 </button>
-              </TitleBox>
+              </BookmarkBtn>
             </BookmarkBox>
           </li>
         ))}

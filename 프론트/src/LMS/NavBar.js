@@ -48,7 +48,7 @@ const DropdownItem = styled.div`
 `;
 
 const checkIsAdmin = () => {
-  return true;
+  return false;
 };
 
 export function NavBar() {
