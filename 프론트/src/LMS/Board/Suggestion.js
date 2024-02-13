@@ -44,7 +44,8 @@ export function Suggestion() {
   const handleWriteButtonClick = () => {
     setIsWriting(true);
   };
-  const handleWriteSuccess = () => {
+  const handleWriteSuccess = (newPost) => {
+    setPosts((prevPosts) => [newPost, ...prevPosts]);
     setIsWriting(false);
   };
 
@@ -66,7 +67,7 @@ export function Suggestion() {
     };
 
     fetchData();
-  }, []);
+  }, [posts]);
 
   return (
     <>

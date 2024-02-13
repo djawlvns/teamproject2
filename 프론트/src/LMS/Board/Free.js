@@ -69,7 +69,7 @@ export function Free() {
     };
 
     fetchData();
-  }, []);
+  }, [posts]);
 
   return (
     <>

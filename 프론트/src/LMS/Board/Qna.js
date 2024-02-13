@@ -44,8 +44,9 @@ export function Qna() {
   const handleWriteButtonClick = () => {
     setIsWriting(true);
   };
-  const handleWriteSuccess = () => {
+  const handleWriteSuccess = (newPost) => {
     setIsWriting(false);
+    setPosts((prevPosts) => [newPost, ...prevPosts]);
   };
 
   useEffect(() => {
@@ -66,7 +67,7 @@ export function Qna() {
     };
 
     fetchData();
-  }, []);
+  }, [posts]);
 
   return (
     <>
