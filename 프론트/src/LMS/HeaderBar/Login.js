@@ -339,7 +339,7 @@ export function Login() {
                       </form>
                       <Findinfo>
                         <Security>
-                          <HiddenCheckbox
+                          {/* <HiddenCheckbox
                             type="checkbox"
                             checked={isChecked}
                             onChange={handleCheck}
@@ -349,12 +349,10 @@ export function Login() {
                           <Membercheck
                             htmlFor="checkboxId"
                             onClick={() => handleCheck()}
-                          >
-                            자동 로그인
-                          </Membercheck>
+                          ></Membercheck> */}
                         </Security>
                         <Typelogin>
-                          <Findidpass>ID/PW찾기</Findidpass>
+                          <Findidpass></Findidpass>
                         </Typelogin>
                       </Findinfo>
 

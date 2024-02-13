@@ -35,11 +35,10 @@ const Table = styled.table`
 `;
 
 const ButtonContainer = styled.div`
-  top: 8%;
-  right: 17%;
-  margin: 20px;
+  position: absolute;
+  top: 90%;
+  right: 10%;
 `;
-const WriteButton = styled.button``;
 
 export function Free() {
   const [posts, setPosts] = useState([]);

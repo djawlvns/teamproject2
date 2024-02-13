@@ -68,7 +68,11 @@ const SubmitButton = styled.button`
   right: 45%;
 `;
 
-const Idcheck = styled.button``;
+const Idcheck = styled.button`
+  position: absolute;
+  top: 4.5%;
+  right: 35%;
+`;
 const TextBox = styled.div`
   display: flex;
   justify-content: center;
@@ -165,6 +169,7 @@ export function Sregister() {
               <li>이메일</li>
             </Jointitle>
           </Namebox>
+          <Idcheck onClick={handleIdCheck}>중복확인하기</Idcheck>
           <Inputbox>
             <input
               placeholder="아이디"
@@ -231,8 +236,6 @@ export function Sregister() {
               style={{ paddingLeft: "5px" }}
             />
           </Inputbox>
-
-          <Idcheck onClick={handleIdCheck}>중복확인하기</Idcheck>
         </JoinBody>
         <SubmitButton onClick={handleSubmit}>가입하기</SubmitButton>
         <TextBox>

@@ -9,6 +9,7 @@ const Container = styled.div`
   min-height: 600px;
   padding-left: 0;
   padding-right: 0;
+  position: relative;
 `;
 
 const Tablebody = styled.div`
@@ -33,9 +34,9 @@ const Table = styled.table`
   }
 `;
 const ButtonContainer = styled.div`
-  top: 8%;
-  right: 17%;
-  margin: 20px;
+  position: absolute;
+  top: 90%;
+  right: 10%;
 `;
 export function Suggestion() {
   const [posts, setPosts] = useState([]);

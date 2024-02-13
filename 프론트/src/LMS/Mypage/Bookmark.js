@@ -121,7 +121,9 @@ const Bookmark = ({ toggleBookmark }) => {
         {bookmarks.map((bookmark) => (
           <li key={bookmark.id}>
             <BookmarkBox>
-              <Thumbnail src={bookmark.thumbnail} alt={bookmark.title} />
+              <a href={`/main/videoroom?url=${bookmark.url}`}>
+                <Thumbnail src={bookmark.thumbnail} alt={bookmark.title} />
+              </a>
               <TitleBox>
                 <Title>{bookmark.title}</Title>
                 <Text>
