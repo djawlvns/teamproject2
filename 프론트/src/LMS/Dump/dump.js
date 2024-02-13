@@ -152,7 +152,7 @@
 //     "description": "SQL,NoSQL"
 // }
 // {
-//     "thumbnail":"https://miro.medium.com/v2/resize:fit:700/0*PSxcvFBVaufSCuwt.png",
+//     "thumbnail":"https://miro.medium.com/v2/re                                                        size:fit:700/0*PSxcvFBVaufSCuwt.png",
 //     "title": "Rest Api설계",
 //     "date": "2024-01-08",
 //     "url": "https://www.youtube.com/watch?v=4DxHX95Lq2U&list=PL7jH19IHhOLOgUL6VGH9kdAA_jZ1d18ZI&index=41",

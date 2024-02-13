@@ -49,7 +49,7 @@ const DropdownItem = styled.div`
 `;
 
 export function NavBar() {
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {

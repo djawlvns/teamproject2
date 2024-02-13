@@ -48,8 +48,9 @@ export function Free() {
   const handleWriteButtonClick = () => {
     setIsWriting(true);
   };
-  const handleWriteSuccess = () => {
+  const handleWriteSuccess = (newPost) => {
     setIsWriting(false);
+    setPosts((prevPosts) => [newPost, ...prevPosts]);
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +59,6 @@ export function Free() {
 
         if (response.resultCode === "SUCCESS") {
           const posts = response.data;
-
           setPosts(posts);
           console.log(posts);
         } else {

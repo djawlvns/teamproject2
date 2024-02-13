@@ -87,8 +87,9 @@ export default function BoardWrite({ onSuccess }) {
         body: JSON.stringify(payload),
       });
       if (response.ok) {
-        onSuccess();
-        setIsModalVisible(false); // 성공 시 모달 닫기
+        const newPostData = await response.json();
+        onSuccess(newPostData);
+        setIsModalVisible(false);
       } else {
         console.error("게시글 저장 실패");
       }
